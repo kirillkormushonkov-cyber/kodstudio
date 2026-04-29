@@ -1,0 +1,62 @@
+---
+title: "Дизайн интерфейсов под Telegram Mini Apps"
+description: "Чем Mini App отличается от обычного веба и какие гайдлайны Telegram стоит соблюдать."
+date: 2026-04-10
+cover: from-brand-violet to-brand-pink
+tags: ["UX", "Telegram"]
+author: KodStudio
+readingTime: "5 мин"
+---
+
+## Что такое Mini App
+
+Telegram Mini App — это веб-приложение внутри Telegram. По сути обычный сайт,
+но с доступом к WebApp SDK и под жёсткие гайдлайны платформы.
+
+## Главные отличия от веба
+
+- **Нет браузерного хрома** — приложение занимает весь viewport
+- **Тема меняется системно** — нужно подхватывать `themeParams`
+- **Нативная клавиатура** — input ведёт себя как в нативном приложении
+- **Жесты** — свайп вниз закрывает модалку
+
+## Подхват темы
+
+```ts
+import { useEffect, useState } from "react";
+
+export function useTelegramTheme() {
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (!tg) return;
+    setTheme(tg.colorScheme);
+    tg.onEvent("themeChanged", () => setTheme(tg.colorScheme));
+  }, []);
+
+  return theme;
+}
+```
+
+<Callout type="info">
+Не пытайтесь переопределить системную тему. Пользователи в Telegram привыкли
+к тому, что приложения подхватывают их выбор.
+</Callout>
+
+## MainButton vs обычная кнопка
+
+Telegram даёт нативную кнопку внизу экрана через `tg.MainButton`. Используйте её
+для основного действия — пользователи к ней привыкли. Свои inline-кнопки —
+для второстепенных.
+
+## Высота viewport
+
+`window.innerHeight` лжёт в Telegram. Используйте `tg.viewportHeight` — она
+обновляется при появлении клавиатуры и других UI-событиях.
+
+## Итог
+
+Mini App — это не обычный лендинг и не нативное приложение. Это отдельный
+формат со своими ритуалами. Чем точнее им следовать, тем выше шансы, что
+пользователь не закроет окно через секунду.

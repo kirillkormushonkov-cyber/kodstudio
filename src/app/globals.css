@@ -1,26 +1,254 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@config "../../tailwind.config.ts";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-space-grotesk);
+
+  /* shadcn token mapping → KodStudio palette */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Dark by default — :root and .dark share KodStudio tokens */
+:root,
+.dark {
+  --background: #0a0a14;
+  --foreground: #f4f4f8;
+  --card: #12121f;
+  --card-foreground: #f4f4f8;
+  --popover: #1a1a2e;
+  --popover-foreground: #f4f4f8;
+  --primary: #6b5bff;
+  --primary-foreground: #f4f4f8;
+  --secondary: #1a1a2e;
+  --secondary-foreground: #f4f4f8;
+  --muted: #1a1a2e;
+  --muted-foreground: #a1a1b5;
+  --accent: #8b5cf6;
+  --accent-foreground: #f4f4f8;
+  --destructive: #ef4444;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #8b5cf6;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: dark;
+  }
+  /* Default focus ring — components can override with their own focus-visible classes */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-space-grotesk), system-ui, sans-serif;
+    letter-spacing: -0.01em;
+  }
+  ::selection {
+    background-color: rgba(139, 92, 246, 0.35);
+    color: #f4f4f8;
   }
 }
 
-body {
-  background: var(--background);
+/* ─── Blog content ──────────────────────────────────────────── */
+
+.prose-blog {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.prose-blog > * + * {
+  margin-top: 1.25em;
+}
+
+.prose-blog h2 {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  scroll-margin-top: 6rem;
+}
+
+.prose-blog h3 {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin-top: 1.75em;
+  margin-bottom: 0.5em;
+  scroll-margin-top: 6rem;
+}
+
+.prose-blog p {
+  color: #c8c8d6;
+}
+
+.prose-blog a {
+  color: #c084fc;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(192, 132, 252, 0.4);
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.prose-blog a:hover {
+  color: #e879f9;
+  text-decoration-color: rgba(232, 121, 249, 0.7);
+}
+
+.prose-blog strong {
+  color: #f4f4f8;
+  font-weight: 600;
+}
+
+.prose-blog ul,
+.prose-blog ol {
+  padding-left: 1.5em;
+  color: #c8c8d6;
+}
+
+.prose-blog ul {
+  list-style: disc;
+}
+
+.prose-blog ol {
+  list-style: decimal;
+}
+
+.prose-blog li {
+  margin: 0.4em 0;
+}
+
+.prose-blog li::marker {
+  color: #6b5bff;
+}
+
+.prose-blog blockquote {
+  border-left: 3px solid #6b5bff;
+  padding-left: 1.25em;
+  font-style: italic;
+  color: #a1a1b5;
+}
+
+.prose-blog code:not(pre code) {
+  background: rgba(139, 92, 246, 0.12);
+  color: #e879f9;
+  padding: 0.1em 0.4em;
+  border-radius: 0.35em;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+.prose-blog pre {
+  background: #0e0e1c;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1.25em 1.5em;
+  border-radius: 0.875rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.prose-blog pre code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+/* shiki span colors via rehype-pretty-code */
+.prose-blog pre [data-line] {
+  display: block;
+}
+
+.prose-blog hr {
+  border: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 2.5em 0;
+}
+
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.prose-blog th,
+.prose-blog td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.6em 0.8em;
+  text-align: left;
+}
+
+.prose-blog th {
+  color: #f4f4f8;
+  font-weight: 600;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Stop our infinite brand keyframes */
+  .animate-marquee,
+  .animate-float,
+  .animate-gradient,
+  .animate-glow-pulse {
+    animation: none !important;
+  }
 }

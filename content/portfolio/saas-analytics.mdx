@@ -1,0 +1,58 @@
+---
+slug: saas-analytics
+title: SaaS-аналитика для e-commerce
+client: Strata Insights
+category: Сайты
+year: 2026
+hero: from-brand-purple via-brand-violet to-brand-magenta
+stack:
+  - Next.js
+  - TypeScript
+  - ClickHouse
+  - tRPC
+  - Stripe
+  - Vercel
+metrics:
+  - value: "5×"
+    label: "Скорость дашбордов"
+  - value: "−65%"
+    label: "Стоимость инфраструктуры"
+  - value: "4.9"
+    label: "Оценка пользователей"
+  - value: "10 нед."
+    label: "От прототипа до релиза"
+task: Заменить устаревший дашборд на скоростной SaaS-аналитический инструмент для e-commerce-платформ с подпиской.
+solution: Перевели хранилище на ClickHouse, переписали фронт на Next.js с server actions, настроили подписки через Stripe и self-service onboarding.
+result: Время отклика дашбордов сократилось в 5 раз, а стоимость инфраструктуры — на 65%.
+gallery:
+  - cover: from-brand-purple to-brand-violet
+    alt: Дашборд продаж
+    aspect: "16/10"
+  - cover: from-brand-violet to-brand-magenta
+    alt: Воронка конверсии
+    aspect: "16/10"
+  - cover: from-brand-magenta via-brand-pink to-brand-purple
+    alt: Сегменты и когорты
+    aspect: "4/3"
+  - cover: from-brand-pink to-brand-violet
+    alt: Настройка отчётов
+    aspect: "4/3"
+  - cover: from-brand-violet via-brand-purple to-brand-pink
+    alt: Onboarding
+    aspect: "3/4"
+---
+
+## Контекст
+
+Strata Insights росли быстрее, чем их инфраструктура. Дашборды грузились по 6-8
+секунд, что напрямую било по retention платных клиентов.
+
+## Что сделали
+
+Перевели аналитическое хранилище на ClickHouse, переписали фронт на Next.js с
+server actions и стримингом. Настроили self-service onboarding и подписки через Stripe.
+
+## Результаты
+
+Время отклика дашбордов сократилось в 5 раз, стоимость инфраструктуры — на 65%
+за счёт колоночного хранилища и кеширования.
