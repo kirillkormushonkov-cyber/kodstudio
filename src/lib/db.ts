@@ -6,7 +6,7 @@ let cached: NeonQueryFunction<false, false> | null = null;
 
 export function getSql(): NeonQueryFunction<false, false> {
   if (cached) return cached;
-  const url = process.env.DATABASE_URL;
+  const url = process.env.DATABASE_URL?.trim();
   if (!url) {
     throw new Error(
       "DATABASE_URL is not configured. Set it in .env.local (dev) or Vercel project env (prod).",

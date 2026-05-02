@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function proxy(req: NextRequest) {
-  const user = process.env.ADMIN_USER;
-  const pass = process.env.ADMIN_PASSWORD;
+  const user = process.env.ADMIN_USER?.trim();
+  const pass = process.env.ADMIN_PASSWORD?.trim();
 
   if (!user || !pass) {
     return new NextResponse(
@@ -21,13 +21,7 @@ export function proxy(req: NextRequest) {
   if (provided !== expected) {
     return new NextResponse("Authentication required", {
       status: 401,
-      headers: {
-        "WWW-Authenticate": 'Basic realm="KodStudio Admin"',
-        "x-debug-user-len": String(user.length),
-        "x-debug-pass-len": String(pass.length),
-        "x-debug-provided-len": String(provided?.length ?? 0),
-        "x-debug-expected-len": String(expected.length),
-      },
+      headers: { "WWW-Authenticate": 'Basic realm="KodStudio Admin"' },
     });
   }
 
