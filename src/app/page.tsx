@@ -10,7 +10,7 @@ import { TechStack } from "@/components/sections/TechStack";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { OrganizationJsonLd } from "@/components/seo/JsonLd";
 
-export default function Home() {
+export default async function Home() {
   const url =
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://kodstudio.dev";
   return (

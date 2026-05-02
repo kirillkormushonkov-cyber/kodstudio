@@ -1,0 +1,88 @@
+---
+title: "React 19 в продакшене: что мы реально используем"
+description: "Actions, useOptimistic, use() — без хайпа, только то, что действительно ушло в прод."
+date: 2026-05-01
+cover: from-brand-pink via-brand-magenta to-brand-violet
+tags: ["React", "Next.js"]
+author: KodStudio
+readingTime: "6 мин"
+---
+
+## Контекст
+
+React 19 вышел давно, но «использую» и «использую в продакшене» — разные вещи.
+Ниже — что у нас реально работает на клиентских проектах, а что мы пока
+обходим стороной.
+
+## Actions — да, везде где формы
+
+Actions упростили обработку сабмитов до неузнаваемости. Раньше было:
+state для loading, state для ошибки, обработчик, оптимистик. Теперь —
+одна функция и `useActionState`.
+
+```tsx
+"use client";
+
+import { useActionState } from "react";
+import { submitContact } from "./actions";
+
+export function ContactForm() {
+  const [state, action, pending] = useActionState(submitContact, null);
+
+  return (
+    <form action={action}>
+      <input name="email" required />
+      <button disabled={pending}>
+        {pending ? "Отправляем..." : "Отправить"}
+      </button>
+      {state?.error && <p className="text-red-500">{state.error}</p>}
+    </form>
+  );
+}
+```
+
+## useOptimistic — да, для мгновенного UX
+
+Лайки, добавление в избранное, drag-and-drop списков. Везде, где сетевая
+задержка убивает ощущение скорости.
+
+```tsx
+const [optimisticLikes, addOptimisticLike] = useOptimistic(
+  likes,
+  (current, increment: number) => current + increment,
+);
+```
+
+Главное правило — не лгите. Если сервер откатит, UX будет хуже, чем без
+оптимистика.
+
+## use() — осторожно
+
+Возможность «развернуть» промис прямо в компоненте звучит магически, но
+на практике легко создаёт водопады запросов и ломает кеширование.
+
+<Callout type="info">
+Используем `use()` только для контекстов и для промисов, которые гарантированно
+переданы сверху и закешированы. Никаких `use(fetch(...))` в случайных местах.
+</Callout>
+
+## ref как prop — да
+
+Никаких больше `forwardRef`. Просто принимаем `ref` как обычный prop.
+Это сэкономило нам сотни строк boilerplate в UI-ките.
+
+## Document Metadata — нет
+
+Встроенные `<title>` и `<meta>` внутри компонентов конфликтуют с Next.js
+metadata API. Мы оставили всё на стороне Next — оно работает предсказуемее.
+
+## Compiler — пока выборочно
+
+React Compiler избавляет от ручного `useMemo` и `useCallback`. Включили
+на 30% компонентов и следим. Где помог — оставили, где сломал хитрую
+оптимизацию — выключили локально.
+
+## Итог
+
+React 19 стоит обновления, но не нужно фанатично переписывать всё под новые
+API. Берите то, что решает конкретную задачу — остальное подождёт.

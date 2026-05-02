@@ -4,6 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:start": "pm2 start ecosystem.config.cjs",
+    "dev:stop": "pm2 stop kodstudio-dev",
+    "dev:restart": "pm2 restart kodstudio-dev",
+    "dev:logs": "pm2 logs kodstudio-dev",
+    "dev:status": "pm2 status",
+    "dev:delete": "pm2 delete kodstudio-dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -15,6 +21,7 @@
   "dependencies": {
     "@base-ui/react": "^1.4.1",
     "@hookform/resolvers": "^5.2.2",
+    "@neondatabase/serverless": "^1.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-autoplay": "^8.6.0",
@@ -49,6 +56,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "eslint-config-prettier": "^10.1.8",
+    "pm2": "^7.0.0",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4",

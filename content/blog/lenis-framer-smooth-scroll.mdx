@@ -1,0 +1,104 @@
+---
+title: "Lenis + Framer Motion: smooth-скролл без джанков"
+description: "Как мы делаем плавный скролл и parallax-эффекты без 60 уведомлений от Lighthouse."
+date: 2026-04-29
+cover: from-brand-violet via-brand-purple to-brand-pink
+tags: ["Performance", "UX"]
+author: KodStudio
+readingTime: "6 мин"
+---
+
+## Зачем вообще smooth-скролл
+
+Нативный скролл в браузере дискретный — браузер прокручивает на несколько
+пикселей за событие колеса. Это нормально для лендингов с контентом,
+но в дизайн-проектах с parallax и липкими секциями выглядит «дёргано».
+
+Lenis сглаживает это, интерполируя позицию скролла между кадрами.
+
+## Минимальная установка
+
+```ts
+import Lenis from "lenis";
+import { useEffect } from "react";
+
+export function useSmoothScroll() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
+  }, []);
+}
+```
+
+Подключаем в корневом layout — и всё, скролл стал плавным.
+
+## Связка с Framer Motion
+
+Framer Motion `useScroll` по умолчанию читает `window.scrollY`. Когда подключён
+Lenis, это значение уже сглажено — никаких костылей не нужно.
+
+```tsx
+"use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+
+export function ParallaxImage() {
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -200]);
+
+  return <motion.img style={{ y }} src="/hero.jpg" alt="" />;
+}
+```
+
+## Где ловили подводные камни
+
+### Anchor-ссылки ломались
+
+`<a href="#about">` нативно не работал с Lenis. Решение — `lenis.scrollTo("#about")`
+в обработчике клика на якорях.
+
+### iOS momentum
+
+На iOS нативный momentum-скролл лучше, чем любой Lenis. Мы отключаем Lenis
+на тач-устройствах и оставляем нативное поведение.
+
+```ts
+const isTouch = window.matchMedia("(pointer: coarse)").matches;
+const lenis = new Lenis({ smoothTouch: false });
+if (isTouch) lenis.destroy();
+```
+
+### Reduced motion
+
+Если пользователь включил `prefers-reduced-motion`, smooth-скролл нужно
+выключать — иначе это нарушение accessibility.
+
+<Callout type="info">
+Не игнорируйте `prefers-reduced-motion`. Это не каприз — у людей с вестибулярными
+расстройствами анимация скролла вызывает физический дискомфорт.
+</Callout>
+
+## Performance
+
+Lenis работает в `requestAnimationFrame` и не перерисовывает DOM — только
+двигает scroll position. На современных устройствах оверхед меньше 1ms на кадр.
+
+Главное — не вешать на скролл тяжёлые слушатели. Используйте `IntersectionObserver`
+вместо `scroll`-событий, и тогда даже на средних мобильниках всё летает.
+
+## Итог
+
+Lenis — это не магия, а аккуратная интерполяция. Подключается за 10 минут,
+ломает мало что, даёт ощутимый рост ощущения качества. На дизайн-проектах —
+мастхев.
