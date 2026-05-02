@@ -21,7 +21,13 @@ export function proxy(req: NextRequest) {
   if (provided !== expected) {
     return new NextResponse("Authentication required", {
       status: 401,
-      headers: { "WWW-Authenticate": 'Basic realm="KodStudio Admin"' },
+      headers: {
+        "WWW-Authenticate": 'Basic realm="KodStudio Admin"',
+        "x-debug-user-len": String(user.length),
+        "x-debug-pass-len": String(pass.length),
+        "x-debug-provided-len": String(provided?.length ?? 0),
+        "x-debug-expected-len": String(expected.length),
+      },
     });
   }
 
