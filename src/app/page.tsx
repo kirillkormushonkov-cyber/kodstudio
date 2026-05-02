@@ -10,7 +10,7 @@ import { TechStack } from "@/components/sections/TechStack";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { OrganizationJsonLd } from "@/components/seo/JsonLd";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const url =
