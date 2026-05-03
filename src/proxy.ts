@@ -5,8 +5,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function proxy(req: NextRequest) {
-  const user = process.env.ADMIN_USER?.trim();
-  const pass = process.env.ADMIN_PASSWORD?.trim();
+  // Strip ALL whitespace (incl. embedded \n) — Vercel sometimes splits long
+  // pasted values with line breaks, which corrupts the base64 Basic Auth header.
+  const user = process.env.ADMIN_USER?.replace(/\s/g, "");
+  const pass = process.env.ADMIN_PASSWORD?.replace(/\s/g, "");
 
   if (!user || !pass) {
     return new NextResponse(
