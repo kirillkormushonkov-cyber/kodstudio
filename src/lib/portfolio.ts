@@ -5,7 +5,13 @@ import path from "node:path";
 import matter from "gray-matter";
 
 export type CaseMetric = { value: string; label: string };
-export type CaseGalleryItem = { cover: string; alt: string; aspect: string };
+export type CaseGalleryItem = {
+  cover: string;
+  alt: string;
+  aspect: string;
+  /** Optional real image. Overrides the gradient placeholder. */
+  image?: string;
+};
 
 export type PortfolioCase = {
   slug: string;

@@ -27,21 +27,26 @@ task: Сделать сайт-визитку арт-студии росписи 
 solution: SPA на React 19 + Vite 8 с Tailwind и Framer Motion. SEO через react-helmet-async на каждой из 11 страниц, OG-теги, PWA-манифест. Формы — react-hook-form + zod, заявки уходят через EmailJS, контент блога санитизируется DOMPurify. Картинки автоматически отдаются в WebP через sharp + `<picture>` с JPG-фолбэком. Развёрнуто на nginx с HTTPS через Let's Encrypt.
 result: Запущен raskaraskraska.ru — 11 страниц с SEO, 9 кейсов в портфолио с галереями в модалках, калькулятор стоимости, мобильная вёрстка с touch-target ≥ 44 px и поддержкой `prefers-reduced-motion`.
 gallery:
-  - cover: from-orange-500 to-rose-500
+  - image: /portfolio/raska/01-hero.png
+    cover: from-orange-500 to-rose-500
     alt: Главная страница с hero-секцией
     aspect: "16/10"
-  - cover: from-rose-500 to-violet-500
+  - image: /portfolio/raska/02-portfolio.png
+    cover: from-rose-500 to-violet-500
     alt: Портфолио росписей с фильтрами
     aspect: "16/10"
-  - cover: from-violet-500 via-rose-500 to-orange-500
+  - image: /portfolio/raska/03-services.png
+    cover: from-violet-500 via-rose-500 to-orange-500
+    alt: Страница услуг с галереей
+    aspect: "16/10"
+  - image: /portfolio/raska/04-calculator.png
+    cover: from-orange-400 via-rose-400 to-violet-400
     alt: Калькулятор стоимости работы
-    aspect: "4/3"
-  - cover: from-orange-400 via-rose-400 to-violet-400
-    alt: Страница услуги с галереей
-    aspect: "4/3"
-  - cover: from-violet-400 to-orange-500
+    aspect: "16/10"
+  - image: /portfolio/raska/05-mobile.png
+    cover: from-violet-400 to-orange-500
     alt: Мобильный вид
-    aspect: "3/4"
+    aspect: "9/16"
 ---
 
 ## Контекст

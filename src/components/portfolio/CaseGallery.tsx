@@ -23,21 +23,33 @@ function GalleryTile({
       aria-label={`Открыть «${item.alt}»`}
     >
       <div className="relative h-full w-full">
-        <div
-          aria-hidden="true"
-          className={cn(
-            "absolute inset-0 bg-gradient-to-br transition-transform duration-300 group-hover/g:scale-[1.04]",
-            item.cover,
-          )}
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 mix-blend-overlay opacity-50"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 25% 15%, rgba(255,255,255,0.45), transparent 55%), radial-gradient(circle at 80% 85%, rgba(0,0,0,0.3), transparent 55%)",
-          }}
-        />
+        {item.image ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={item.image}
+            alt={item.alt}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover/g:scale-[1.04]"
+          />
+        ) : (
+          <>
+            <div
+              aria-hidden="true"
+              className={cn(
+                "absolute inset-0 bg-gradient-to-br transition-transform duration-300 group-hover/g:scale-[1.04]",
+                item.cover,
+              )}
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 mix-blend-overlay opacity-50"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle at 25% 15%, rgba(255,255,255,0.45), transparent 55%), radial-gradient(circle at 80% 85%, rgba(0,0,0,0.3), transparent 55%)",
+              }}
+            />
+          </>
+        )}
       </div>
     </button>
   );
@@ -149,15 +161,25 @@ export function CaseGallery({ items }: { items: CaseGalleryItem[] }) {
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-5xl"
             >
-              <div
-                style={{ aspectRatio: current.aspect.replace("/", " / ") }}
-                className={cn(
-                  "border-brand-violet/30 shadow-glow w-full rounded-2xl border bg-gradient-to-br",
-                  current.cover,
-                )}
-                role="img"
-                aria-label={current.alt}
-              />
+              {current.image ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={current.image}
+                  alt={current.alt}
+                  style={{ aspectRatio: current.aspect.replace("/", " / ") }}
+                  className="border-brand-violet/30 shadow-glow w-full rounded-2xl border object-cover"
+                />
+              ) : (
+                <div
+                  style={{ aspectRatio: current.aspect.replace("/", " / ") }}
+                  className={cn(
+                    "border-brand-violet/30 shadow-glow w-full rounded-2xl border bg-gradient-to-br",
+                    current.cover,
+                  )}
+                  role="img"
+                  aria-label={current.alt}
+                />
+              )}
               <p className="text-text-secondary mt-4 text-center text-sm">
                 {current.alt}
               </p>
