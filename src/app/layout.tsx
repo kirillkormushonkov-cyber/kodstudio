@@ -79,12 +79,6 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: ["/og"],
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-  },
   robots: {
     index: true,
     follow: true,
