@@ -23,12 +23,16 @@ function shortestOffset(index: number, active: number, total: number): number {
 }
 
 const VISIBLE_NEIGHBORS = 2; // how many cases on each side stay rendered
-const X_STEP_PERCENT = 55;
-const SCALE_STEP = 0.12;
-const OPACITY_STEP = 0.4;
+const ACTIVE_SCALE = 1.06;
+const NEIGHBOR_SCALE = 0.74;
+const FAR_SCALE = 0.58;
+const X_STEP_PERCENT = 62;
+const ACTIVE_OPACITY = 1;
+const NEIGHBOR_OPACITY = 0.42;
+const FAR_OPACITY = 0.18;
 const Z_STEP = 10;
-const MOUSE_COOLDOWN_MS = 700;
-const EDGE_TRIGGER_PCT = 0.18;
+const MOUSE_COOLDOWN_MS = 950;
+const EDGE_TRIGGER_PCT = 0.14;
 
 export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const [active, setActive] = React.useState(0);
@@ -115,8 +119,16 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
 
           const isActive = offset === 0;
           const x = offset * X_STEP_PERCENT;
-          const scale = Math.max(0.55, 1 - absOffset * SCALE_STEP);
-          const opacity = Math.max(0.25, 1 - absOffset * OPACITY_STEP);
+          const scale = isActive
+            ? ACTIVE_SCALE
+            : absOffset === 1
+              ? NEIGHBOR_SCALE
+              : FAR_SCALE;
+          const opacity = isActive
+            ? ACTIVE_OPACITY
+            : absOffset === 1
+              ? NEIGHBOR_OPACITY
+              : FAR_OPACITY;
           const z = Math.max(1, 30 - absOffset * Z_STEP);
 
           return (
@@ -127,12 +139,12 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
               transition={
                 reduce
                   ? { duration: 0 }
-                  : { type: "spring", stiffness: 220, damping: 28 }
+                  : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
               }
               style={{
                 zIndex: z,
                 pointerEvents: isActive ? "auto" : "none",
-                filter: isActive ? undefined : "blur(2px)",
+                filter: isActive ? undefined : `blur(${absOffset * 2}px)`,
               }}
               className="absolute inset-x-0 top-0 mx-auto h-full w-[min(90%,640px)]"
               aria-hidden={!isActive}
