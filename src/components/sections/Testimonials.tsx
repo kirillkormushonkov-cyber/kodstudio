@@ -1,6 +1,9 @@
+import { headers } from "next/headers";
+
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { listApproved, type Review } from "@/lib/reviews";
+import { isVercelAppHost } from "@/lib/turnstile";
 
 import { ReviewForm } from "./ReviewForm";
 import {
@@ -31,11 +34,11 @@ async function loadReviews(): Promise<Review[]> {
 export async function Testimonials() {
   const reviews = await loadReviews();
   const items = reviews.map(toCarouselItem);
-  // On Vercel preview deploys (*.vercel.app) Cloudflare refuses real site keys
-  // because the domain is on the Public Suffix List — fall back to the testing
-  // key that always passes. Production uses the real key as usual.
-  const isPreview = process.env.VERCEL_ENV === "preview";
-  const siteKey = isPreview
+  // On *.vercel.app hosts Cloudflare refuses real site keys because the domain
+  // is on the Public Suffix List — fall back to the always-pass testing key.
+  // Production custom domain (kodstudio.ru) uses the real key as usual.
+  const host = (await headers()).get("host");
+  const siteKey = isVercelAppHost(host)
     ? "1x00000000000000000000AA"
     : process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 

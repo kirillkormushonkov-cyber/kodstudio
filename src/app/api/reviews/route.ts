@@ -41,8 +41,13 @@ export async function POST(req: Request) {
   }
 
   const ip = clientIp(req);
+  const host = req.headers.get("host");
 
-  const captchaOk = await verifyTurnstile(parsed.data.turnstileToken, ip);
+  const captchaOk = await verifyTurnstile(
+    parsed.data.turnstileToken,
+    ip,
+    host,
+  );
   if (!captchaOk) {
     return NextResponse.json({ error: "Captcha failed" }, { status: 400 });
   }

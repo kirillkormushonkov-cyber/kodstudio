@@ -3,17 +3,23 @@ import "server-only";
 const VERIFY_URL =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-// Cloudflare testing secret — always returns success. Used on Vercel preview
-// deployments because *.vercel.app is on the Public Suffix List and Cloudflare
-// refuses to issue tokens for those hostnames.
+// Cloudflare testing secret — always returns success. Used when the request
+// arrives on *.vercel.app because the domain sits on the Public Suffix List
+// and Cloudflare refuses to issue tokens for it.
 const TESTING_SECRET = "1x0000000000000000000000AA";
+
+export function isVercelAppHost(host: string | null | undefined): boolean {
+  if (!host) return false;
+  return host.endsWith(".vercel.app");
+}
 
 export async function verifyTurnstile(
   token: string,
   ip?: string,
+  host?: string | null,
 ): Promise<boolean> {
-  const isPreview = process.env.VERCEL_ENV === "preview";
-  const secret = isPreview
+  const useTesting = isVercelAppHost(host);
+  const secret = useTesting
     ? TESTING_SECRET
     : process.env.TURNSTILE_SECRET_KEY;
 
