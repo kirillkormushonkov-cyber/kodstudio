@@ -14,6 +14,7 @@ import { CTASection } from "@/components/sections/CTASection";
 import {
   formatPostDate,
   getAllPosts,
+  getBlogOgUrl,
   getPostBySlug,
   getRelatedPosts,
   type BlogPost,
@@ -130,12 +131,11 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
 
           <div className="mt-10 aspect-[16/8] overflow-hidden rounded-3xl border border-brand-violet/15 shadow-glow">
-            <div
-              aria-hidden="true"
-              className={cn(
-                "h-full w-full bg-gradient-to-br",
-                post.cover,
-              )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={getBlogOgUrl(post)}
+              alt={post.title}
+              className="h-full w-full object-cover"
             />
           </div>
         </Container>
@@ -183,12 +183,12 @@ export default async function BlogPostPage({ params }: Props) {
                 <article key={p.slug} className="group">
                   <Link href={`/blog/${p.slug}`} className="block">
                     <div className="border-brand-violet/15 relative aspect-video overflow-hidden rounded-xl border">
-                      <div
-                        aria-hidden="true"
-                        className={cn(
-                          "absolute inset-0 bg-gradient-to-br transition-transform duration-500 group-hover:scale-[1.03]",
-                          p.cover,
-                        )}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={getBlogOgUrl(p)}
+                        alt={p.title}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     </div>
                     <p className="text-text-muted mt-4 text-xs">

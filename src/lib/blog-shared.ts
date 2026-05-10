@@ -29,3 +29,15 @@ export function formatPostDate(iso: string): string {
   if (!iso) return "";
   return ruDateFormat.format(new Date(iso)).replace(" г.", "");
 }
+
+export function getBlogOgUrl(post: Pick<BlogPost, "title" | "description" | "tags" | "readingTime">): string {
+  const subtitleParts = [post.tags[0], post.readingTime].filter(Boolean);
+  const subtitle = subtitleParts.length > 0
+    ? subtitleParts.join(" · ")
+    : post.description.slice(0, 120);
+  const params = new URLSearchParams({
+    title: post.title,
+    subtitle,
+  });
+  return `/og?${params.toString()}`;
+}

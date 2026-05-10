@@ -9,7 +9,7 @@ import GithubSlugger from "github-slugger";
 import type { BlogPost, TocHeading } from "@/lib/blog-shared";
 
 export type { BlogPost, TocHeading } from "@/lib/blog-shared";
-export { formatPostDate } from "@/lib/blog-shared";
+export { formatPostDate, getBlogOgUrl } from "@/lib/blog-shared";
 
 export type BlogPostFull = BlogPost & {
   body: string;

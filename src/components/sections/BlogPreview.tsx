@@ -4,8 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { formatPostDate, getLatestPosts, type BlogPost } from "@/lib/blog";
-import { cn } from "@/lib/utils";
+import { formatPostDate, getBlogOgUrl, getLatestPosts, type BlogPost } from "@/lib/blog";
 
 function BlogCard({ post }: { post: BlogPost }) {
   return (
@@ -13,39 +12,13 @@ function BlogCard({ post }: { post: BlogPost }) {
       <Link href={`/blog/${post.slug}`} className="block outline-none">
         {/* Cover */}
         <div className="border-brand-violet/15 relative aspect-video overflow-hidden rounded-xl border">
-          <div
-            aria-hidden="true"
-            className={cn(
-              "absolute inset-0 bg-gradient-to-br transition-transform duration-500 group-hover:scale-[1.03]",
-              post.cover,
-            )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={getBlogOgUrl(post)}
+            alt={post.title}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 mix-blend-overlay opacity-50"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 25% 15%, rgba(255,255,255,0.45), transparent 55%), radial-gradient(circle at 80% 85%, rgba(0,0,0,0.3), transparent 55%)",
-            }}
-          />
-          <svg
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full opacity-[0.06] mix-blend-overlay"
-          >
-            <filter id={`blog-noise-${post.slug}`}>
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.9"
-                numOctaves="2"
-                stitchTiles="stitch"
-              />
-            </filter>
-            <rect
-              width="100%"
-              height="100%"
-              filter={`url(#blog-noise-${post.slug})`}
-            />
-          </svg>
         </div>
 
         {/* Meta */}

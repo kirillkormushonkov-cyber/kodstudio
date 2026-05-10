@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
-import { formatPostDate, type BlogPost } from "@/lib/blog-shared";
+import { formatPostDate, getBlogOgUrl, type BlogPost } from "@/lib/blog-shared";
 import { cn } from "@/lib/utils";
 
 const ALL_TAG = "Все";
@@ -112,20 +112,12 @@ export function BlogList({
           <article key={post.slug} className="group">
             <Link href={`/blog/${post.slug}`} className="block outline-none">
               <div className="border-brand-violet/15 relative aspect-video overflow-hidden rounded-xl border">
-                <div
-                  aria-hidden="true"
-                  className={cn(
-                    "absolute inset-0 bg-gradient-to-br transition-transform duration-500 group-hover:scale-[1.03]",
-                    post.cover,
-                  )}
-                />
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 mix-blend-overlay opacity-50"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle at 25% 15%, rgba(255,255,255,0.45), transparent 55%), radial-gradient(circle at 80% 85%, rgba(0,0,0,0.3), transparent 55%)",
-                  }}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={getBlogOgUrl(post)}
+                  alt={post.title}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               </div>
 
