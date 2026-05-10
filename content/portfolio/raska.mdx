@@ -1,0 +1,67 @@
+---
+slug: raska
+title: РАСКА — сайт арт-студии росписи стен
+client: Арт-студия РАСКА, Нижний Новгород
+category: Сайты
+year: 2026
+hero: from-orange-500 via-rose-500 to-violet-400
+stack:
+  - React 19
+  - Vite 8
+  - Tailwind CSS
+  - Framer Motion
+  - react-hook-form + zod
+  - EmailJS
+  - Nginx
+metrics:
+  - value: "11"
+    label: "Страниц с индивидуальным SEO"
+  - value: "9"
+    label: "Реализованных проектов в портфолио"
+  - value: "−43%"
+    label: "Вес изображений после WebP-конвертации"
+  - value: "A11y"
+    label: "Полный аудит доступности форм и навигации"
+task: Сделать сайт-визитку арт-студии росписи стен Ксении Леоновой — с портфолио, страницами услуг, калькулятором стоимости, блогом и заявочной формой.
+solution: SPA на React 19 + Vite 8 с Tailwind и Framer Motion. SEO через react-helmet-async на каждой из 11 страниц, OG-теги, PWA-манифест. Формы — react-hook-form + zod, заявки уходят через EmailJS, контент блога санитизируется DOMPurify. Картинки автоматически отдаются в WebP через sharp + `<picture>` с JPG-фолбэком. Развёрнуто на nginx с HTTPS через Let's Encrypt.
+result: Запущен raskaraskraska.ru — 11 страниц с SEO, 9 кейсов в портфолио с галереями в модалках, калькулятор стоимости, мобильная вёрстка с touch-target ≥ 44 px и поддержкой `prefers-reduced-motion`.
+gallery:
+  - cover: from-orange-500 to-rose-500
+    alt: Главная страница с hero-секцией
+    aspect: "16/10"
+  - cover: from-rose-500 to-violet-500
+    alt: Портфолио росписей с фильтрами
+    aspect: "16/10"
+  - cover: from-violet-500 via-rose-500 to-orange-500
+    alt: Калькулятор стоимости работы
+    aspect: "4/3"
+  - cover: from-orange-400 via-rose-400 to-violet-400
+    alt: Страница услуги с галереей
+    aspect: "4/3"
+  - cover: from-violet-400 to-orange-500
+    alt: Мобильный вид
+    aspect: "3/4"
+---
+
+## Контекст
+
+К нам пришла Ксения Леонова — художник, расписывающий стены под заказ
+в Нижнем Новгороде и за его пределами. Нужен был сайт, который одновременно
+работает как портфолио, прайс-лист и точка входа для заявок,
+а ещё ранжируется в Яндексе по росписи стен и муралам.
+
+## Что сделали
+
+Собрали SPA на React 19 + Vite 8, тёмная тема с фирменными коралловым и фиолетовым
+акцентами, плавные анимации на Framer Motion. На каждой из 11 страниц — отдельный
+SEO-блок: title, description, OG, Twitter Card. Калькулятор стоимости и форма заявки
+сделаны на react-hook-form + zod, отправка через EmailJS. Картинки конвертируются
+в WebP через sharp с JPG-фолбэком — вес статики упал на 43%. Прошли полный
+UI/UX-аудит: touch-target ≥ 44 px, `prefers-reduced-motion`, aria-атрибуты на формах
+и интерактивных фильтрах.
+
+## Результаты
+
+Запустили raskaraskraska.ru на собственном VPS с nginx и сертификатом Let's Encrypt.
+9 реальных кейсов в портфолио с галереями, 11 SEO-страниц, доступный UI,
+заявки сразу падают художнику на почту.
