@@ -2,13 +2,13 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { CaseCard } from "@/components/portfolio/CaseCard";
+import { CaseCarousel } from "@/components/portfolio/CaseCarousel";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getAllCases } from "@/lib/portfolio";
 
 export function FeaturedCases() {
-  const cases = getAllCases().slice(0, 4);
+  const cases = getAllCases();
   if (cases.length === 0) return null;
 
   return (
@@ -28,10 +28,8 @@ export function FeaturedCases() {
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {cases.map((c) => (
-            <CaseCard key={c.slug} data={c} />
-          ))}
+        <div className="mt-10 md:mt-14">
+          <CaseCarousel cases={cases} />
         </div>
       </Container>
     </section>

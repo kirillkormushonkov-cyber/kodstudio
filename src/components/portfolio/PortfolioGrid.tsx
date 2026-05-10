@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 
-import { CaseCard } from "@/components/portfolio/CaseCard";
+import { CaseCarousel } from "@/components/portfolio/CaseCarousel";
 import type { PortfolioCase } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
@@ -47,30 +46,7 @@ export function PortfolioGrid({
         ))}
       </div>
 
-      <motion.div
-        layout
-        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        <AnimatePresence mode="popLayout" initial={false}>
-          {filtered.map((c) => (
-            <motion.div
-              key={c.slug}
-              layout
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.94 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              <CaseCard data={c} />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
-
-      {filtered.length === 0 && (
-        <p className="text-text-muted mt-8 text-center text-sm">
-          Кейсов в этой категории пока нет.
-        </p>
-      )}
+      <CaseCarousel key={active} cases={filtered} />
     </>
   );
 }
