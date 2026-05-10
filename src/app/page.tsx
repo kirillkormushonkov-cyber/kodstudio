@@ -9,6 +9,7 @@ import { Stats } from "@/components/sections/Stats";
 import { TechStack } from "@/components/sections/TechStack";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { OrganizationJsonLd } from "@/components/seo/JsonLd";
+import { ScrollReveal } from "@/components/system/ScrollReveal";
 
 export const dynamic = "force-dynamic";
 
@@ -19,15 +20,33 @@ export default async function Home() {
     <main className="flex-1">
       <OrganizationJsonLd url={url} />
       <Hero />
-      <ClientsMarquee />
-      <Services />
-      <FeaturedCases />
-      <Stats />
-      <Process />
-      <TechStack />
-      <Testimonials />
-      <BlogPreview />
-      <CTASection />
+      <ScrollReveal>
+        <ClientsMarquee />
+      </ScrollReveal>
+      <ScrollReveal>
+        <Services />
+      </ScrollReveal>
+      <ScrollReveal>
+        <FeaturedCases />
+      </ScrollReveal>
+      <ScrollReveal>
+        <Stats />
+      </ScrollReveal>
+      <ScrollReveal>
+        <Process />
+      </ScrollReveal>
+      <ScrollReveal>
+        <TechStack />
+      </ScrollReveal>
+      <ScrollReveal>
+        <Testimonials />
+      </ScrollReveal>
+      <ScrollReveal>
+        <BlogPreview />
+      </ScrollReveal>
+      <ScrollReveal>
+        <CTASection />
+      </ScrollReveal>
     </main>
   );
 }
