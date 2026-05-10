@@ -10,47 +10,52 @@ type Blob = {
   duration: number;
 };
 
+// Большие blur-радиусы при непрерывной анимации очень дорогие — держим в
+// разумных пределах и ограничиваемся двумя блобами. Анимируем только
+// transform (через framer-motion x/y), чтобы держать слои на GPU.
 const blobs: Blob[] = [
   {
-    className: "bg-brand-violet/25",
+    className: "bg-brand-violet/20",
     style: {
-      top: "-12%",
-      left: "-8%",
-      width: "44rem",
-      height: "44rem",
-      filter: "blur(120px)",
+      top: "-10%",
+      left: "-6%",
+      width: "32rem",
+      height: "32rem",
+      filter: "blur(70px)",
+      willChange: "transform",
     },
-    animate: { x: [0, 60, -30, 0], y: [0, 40, -20, 0] },
-    duration: 28,
+    animate: { x: [0, 40, -20, 0], y: [0, 30, -15, 0] },
+    duration: 40,
   },
   {
-    className: "bg-brand-pink/20",
+    className: "bg-brand-pink/15",
     style: {
-      top: "30%",
-      right: "-12%",
-      width: "38rem",
-      height: "38rem",
-      filter: "blur(140px)",
+      top: "40%",
+      right: "-10%",
+      width: "28rem",
+      height: "28rem",
+      filter: "blur(80px)",
+      willChange: "transform",
     },
-    animate: { x: [0, -50, 30, 0], y: [0, -40, 50, 0] },
-    duration: 36,
-  },
-  {
-    className: "bg-brand-magenta/20",
-    style: {
-      bottom: "-10%",
-      left: "20%",
-      width: "34rem",
-      height: "34rem",
-      filter: "blur(130px)",
-    },
-    animate: { x: [0, 40, -50, 0], y: [0, -30, 30, 0] },
-    duration: 32,
+    animate: { x: [0, -30, 20, 0], y: [0, -25, 30, 0] },
+    duration: 48,
   },
 ];
 
 export function BackgroundDecor() {
   const reduce = useReducedMotion();
+  const [isMobile, setIsMobile] = React.useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // На мобиле статика — экономим GPU. На десктопе с reduce-motion тоже.
+  const animateBlobs = !reduce && isMobile === false;
 
   return (
     <div
@@ -62,15 +67,15 @@ export function BackgroundDecor() {
           key={i}
           className={`absolute rounded-full ${blob.className}`}
           style={blob.style}
-          animate={reduce ? undefined : blob.animate}
+          animate={animateBlobs ? blob.animate : undefined}
           transition={
-            reduce
-              ? undefined
-              : {
+            animateBlobs
+              ? {
                   duration: blob.duration,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }
+              : undefined
           }
         />
       ))}
