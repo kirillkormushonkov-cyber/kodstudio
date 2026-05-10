@@ -1,0 +1,67 @@
+---
+slug: tattonn
+title: tattonn.ru — сайт тату-студии
+client: Тату-студия Tattonn
+category: Сайты
+year: 2026
+hero: from-zinc-900 via-rose-900 to-zinc-700
+stack:
+  - React 19
+  - Vite 8
+  - Tailwind CSS
+  - Framer Motion
+  - react-hook-form + zod
+  - Puppeteer (prerender)
+  - Nginx
+metrics:
+  - value: "19"
+    label: "Страниц с уникальным SEO"
+  - value: "318"
+    label: "WebP-вариантов изображений в 3 размерах"
+  - value: "Prerender"
+    label: "Статический HTML для поисковиков"
+  - value: "PWA"
+    label: "Установка на главный экран телефона"
+task: Сделать сайт тату-студии с галереей работ, профилями мастеров, блогом, многошаговой формой записи и SEO под коммерческие запросы по татуировке.
+solution: SPA на React 19 + Vite 8 с Tailwind и Framer Motion. 19 страниц с индивидуальным SEO через react-helmet-async, JSON-LD TattooParlor, sitemap.xml и prerender на Puppeteer — поисковики получают полный HTML. Картинки в WebP в трёх размерах (оригинал / 1024 / 640) с JPG-фолбэком через `<picture>`. Multi-step форма записи на react-hook-form + zod, PWA-манифест, Яндекс.Метрика с вебвизором и автоцелями. Развёрнуто на Timeweb VPS под nginx + HTTPS от Let's Encrypt.
+result: Запущен tattonn.ru — 19 предсобранных SEO-страниц, 318 WebP-картинок, multi-step бронирование, PWA-режим и подключённая аналитика. Верификация в Яндекс Вебмастере и Google Search Console.
+gallery:
+  - cover: from-zinc-900 to-rose-900
+    alt: Главная страница с hero-секцией
+    aspect: "16/10"
+  - cover: from-rose-900 to-zinc-700
+    alt: Галерея работ с фильтрами и модалкой
+    aspect: "16/10"
+  - cover: from-zinc-800 via-rose-900 to-zinc-900
+    alt: Профиль мастера с подборкой работ
+    aspect: "4/3"
+  - cover: from-zinc-700 to-rose-900
+    alt: Multi-step форма записи
+    aspect: "4/3"
+  - cover: from-rose-900 via-zinc-800 to-zinc-900
+    alt: Мобильная версия
+    aspect: "3/4"
+---
+
+## Контекст
+
+Тату-студии Tattonn нужен был сайт, который выдерживает SEO-конкуренцию в нише,
+красиво показывает работы мастеров и принимает заявки на сеансы — без CMS,
+с быстрой загрузкой и тёмной эстетикой студии.
+
+## Что сделали
+
+SPA на React 19 + Vite 8, тёмная тема, плавные анимации на Framer Motion.
+19 страниц — главная, галерея, профили мастеров, блог, FAQ, контакты, многошаговое
+бронирование — каждая со своим SEO-блоком через react-helmet-async. Для поисковиков
+страницы дополнительно предрендерятся в статический HTML через Puppeteer.
+Картинки конвертируются в WebP в трёх размерах через скрипт и отдаются через
+`<picture>` с JPG-фолбэком. PWA-манифест, Яндекс.Метрика, верификация в Вебмастере
+и Search Console.
+
+## Результаты
+
+Запустили tattonn.ru на Timeweb VPS под nginx с HTTPS. Сайт предсобирается
+в статический HTML, картинки максимально оптимизированы, форма записи
+работает без бэка через email-уведомления, аналитика подключена и считает
+автоматические цели.
