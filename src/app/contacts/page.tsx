@@ -11,6 +11,7 @@ import {
   WhatsappIcon,
 } from "@/components/layout/social-icons";
 import { WhatsAppQR } from "@/components/contacts/WhatsAppQR";
+import { ScrollReveal } from "@/components/system/ScrollReveal";
 
 const EMAIL = "hello@kodstudio.dev";
 const TELEGRAM_URL = "https://t.me/kodstudio";
@@ -63,6 +64,7 @@ export default function ContactsPage() {
       </section>
 
       {/* Two columns */}
+      <ScrollReveal>
       <section className="pb-20 md:pb-28">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-14">
@@ -145,6 +147,7 @@ export default function ContactsPage() {
           </div>
         </Container>
       </section>
+      </ScrollReveal>
     </main>
   );
 }

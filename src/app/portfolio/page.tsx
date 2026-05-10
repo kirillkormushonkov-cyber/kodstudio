@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { GradientText } from "@/components/ui/gradient-text";
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid";
 import { CTASection } from "@/components/sections/CTASection";
+import { ScrollReveal } from "@/components/system/ScrollReveal";
 import { getAllCases, getCategories } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
@@ -50,13 +51,17 @@ export default function PortfolioListPage() {
       </section>
 
       {/* Grid */}
-      <section className="pb-20 md:pb-28">
-        <Container>
-          <PortfolioGrid cases={cases} categories={categories} />
-        </Container>
-      </section>
+      <ScrollReveal>
+        <section className="pb-20 md:pb-28">
+          <Container>
+            <PortfolioGrid cases={cases} categories={categories} />
+          </Container>
+        </section>
+      </ScrollReveal>
 
-      <CTASection />
+      <ScrollReveal>
+        <CTASection />
+      </ScrollReveal>
     </main>
   );
 }

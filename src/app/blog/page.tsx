@@ -4,6 +4,7 @@ import { BlogList } from "@/components/blog/BlogList";
 import { Container } from "@/components/ui/container";
 import { GradientText } from "@/components/ui/gradient-text";
 import { CTASection } from "@/components/sections/CTASection";
+import { ScrollReveal } from "@/components/system/ScrollReveal";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 
 export const metadata: Metadata = {
@@ -48,13 +49,17 @@ export default function BlogIndexPage() {
         </Container>
       </section>
 
-      <section className="pb-20 md:pb-28">
-        <Container>
-          <BlogList posts={posts} tags={tags} />
-        </Container>
-      </section>
+      <ScrollReveal>
+        <section className="pb-20 md:pb-28">
+          <Container>
+            <BlogList posts={posts} tags={tags} />
+          </Container>
+        </section>
+      </ScrollReveal>
 
-      <CTASection />
+      <ScrollReveal>
+        <CTASection />
+      </ScrollReveal>
     </main>
   );
 }

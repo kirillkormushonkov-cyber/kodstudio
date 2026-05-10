@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { GradientText } from "@/components/ui/gradient-text";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CTASection } from "@/components/sections/CTASection";
+import { ScrollReveal } from "@/components/system/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "О нас",
@@ -133,6 +134,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
+      <ScrollReveal>
       <section className="py-16 md:py-24">
         <Container>
           <SectionHeading
@@ -158,8 +160,10 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+      </ScrollReveal>
 
       {/* Team */}
+      <ScrollReveal>
       <section className="py-16 md:py-24">
         <Container>
           <SectionHeading
@@ -194,8 +198,10 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+      </ScrollReveal>
 
       {/* Timeline / story */}
+      <ScrollReveal>
       <section className="py-16 md:py-24">
         <Container>
           <SectionHeading
@@ -226,8 +232,11 @@ export default function AboutPage() {
           </ol>
         </Container>
       </section>
+      </ScrollReveal>
 
-      <CTASection />
+      <ScrollReveal>
+        <CTASection />
+      </ScrollReveal>
     </main>
   );
 }

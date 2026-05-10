@@ -15,6 +15,7 @@ import { Container } from "@/components/ui/container";
 import { GradientText } from "@/components/ui/gradient-text";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CTASection } from "@/components/sections/CTASection";
+import { ScrollReveal } from "@/components/system/ScrollReveal";
 import {
   getAllServiceSlugs,
   getService,
@@ -47,12 +48,24 @@ export default async function ServicePage({ params }: Props) {
   return (
     <main className="flex-1">
       <ServiceHero service={service} />
-      <ServiceFeatures service={service} />
-      <ServiceTechRow service={service} />
-      <ServiceProcessAccordion service={service} />
-      <ServicePricing service={service} />
-      <ServiceFaq service={service} />
-      <CTASection />
+      <ScrollReveal>
+        <ServiceFeatures service={service} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <ServiceTechRow service={service} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <ServiceProcessAccordion service={service} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <ServicePricing service={service} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <ServiceFaq service={service} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <CTASection />
+      </ScrollReveal>
     </main>
   );
 }
