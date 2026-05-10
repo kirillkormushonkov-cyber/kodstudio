@@ -44,7 +44,7 @@ function BrowserMockup() {
   return (
     <div
       aria-hidden="true"
-      className="border-border bg-bg-overlay absolute -right-8 -bottom-12 hidden w-72 rotate-3 select-none rounded-xl border shadow-2xl transition-transform duration-500 group-hover:rotate-2 group-hover:-translate-y-2 md:block"
+      className="border-border bg-bg-overlay absolute -right-8 -bottom-12 hidden w-72 rotate-3 select-none rounded-xl border shadow-2xl transition-transform duration-500 group-hover:rotate-2 group-hover:-translate-y-2 lg:block"
     >
       <div className="border-border flex items-center gap-1.5 border-b px-3 py-2.5">
         <span className="size-2 rounded-full bg-red-500/70" />
@@ -70,7 +70,7 @@ function ChatMockup() {
   return (
     <div
       aria-hidden="true"
-      className="absolute right-6 bottom-8 hidden w-56 flex-col gap-2.5 md:flex"
+      className="absolute right-6 bottom-8 hidden w-56 flex-col gap-2.5 lg:flex"
     >
       <div className="bg-bg-overlay border-border text-text-secondary self-start rounded-2xl rounded-bl-md border px-3 py-2 text-xs">
         Привет! Хочу автоматизировать заказы 👋
@@ -215,7 +215,7 @@ export function Services() {
 
               <div
                 aria-hidden="true"
-                className="ml-auto hidden h-full items-end gap-3 pr-4 md:flex"
+                className="ml-auto hidden h-full items-end gap-3 pr-4 lg:flex"
               >
                 <PhoneMockup className="-mb-6 h-[230px] w-[120px] -rotate-6" />
                 <PhoneMockup className="-mb-2 h-[260px] w-[130px] rotate-3" />
