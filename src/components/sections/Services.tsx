@@ -44,7 +44,7 @@ function BrowserMockup() {
   return (
     <div
       aria-hidden="true"
-      className="border-border bg-bg-overlay absolute -right-8 -bottom-12 hidden w-72 rotate-3 select-none rounded-xl border shadow-2xl transition-transform duration-500 group-hover:rotate-2 group-hover:-translate-y-2 lg:block"
+      className="border-border bg-bg-overlay pointer-events-none absolute right-[-2rem] bottom-[-3rem] w-72 rotate-3 select-none rounded-xl border shadow-2xl transition-transform duration-500 group-hover:rotate-2 group-hover:-translate-y-2"
     >
       <div className="border-border flex items-center gap-1.5 border-b px-3 py-2.5">
         <span className="size-2 rounded-full bg-red-500/70" />
@@ -61,27 +61,6 @@ function BrowserMockup() {
           <div className="bg-brand-purple/25 aspect-square rounded" />
           <div className="bg-brand-pink/25 aspect-square rounded" />
         </div>
-      </div>
-    </div>
-  );
-}
-
-function ChatMockup() {
-  return (
-    <div
-      aria-hidden="true"
-      className="absolute right-6 bottom-8 hidden w-56 flex-col gap-2.5 lg:flex"
-    >
-      <div className="bg-bg-overlay border-border text-text-secondary self-start rounded-2xl rounded-bl-md border px-3 py-2 text-xs">
-        Привет! Хочу автоматизировать заказы 👋
-      </div>
-      <div className="bg-gradient-brand shadow-brand self-end rounded-2xl rounded-br-md px-3 py-2 text-xs text-white">
-        Готово. Соберём бот за 7 дней ✨
-      </div>
-      <div className="bg-bg-overlay border-border self-start rounded-2xl rounded-bl-md border px-3 py-2">
-        <span className="bg-text-muted/60 inline-block size-1.5 animate-bounce rounded-full" />
-        <span className="bg-text-muted/60 mx-0.5 inline-block size-1.5 animate-bounce rounded-full [animation-delay:120ms]" />
-        <span className="bg-text-muted/60 inline-block size-1.5 animate-bounce rounded-full [animation-delay:240ms]" />
       </div>
     </div>
   );
@@ -124,38 +103,42 @@ export function Services() {
             className={cn(cardBase, "h-[480px] lg:col-span-2")}
             id="services-dev"
           >
-            <div className="relative z-10 flex h-full max-w-md flex-col">
-              <div className={iconWrap}>
-                <Globe className="size-7 text-white" aria-hidden="true" />
+            <div className="grid h-full grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+              <div className="relative z-10 flex flex-col">
+                <div className={iconWrap}>
+                  <Globe className="size-7 text-white" aria-hidden="true" />
+                </div>
+
+                <h3 className="font-heading text-text-primary mt-6 text-2xl font-bold tracking-tight md:text-3xl">
+                  Сайты под ключ
+                </h3>
+
+                <p className="text-text-secondary mt-3 text-sm leading-relaxed md:text-base">
+                  Лендинги, корпоративные сайты, e-commerce и веб-приложения.
+                  Дизайн, разработка, контент и аналитика — собираем под задачу.
+                </p>
+
+                <ul className="mt-6 grid gap-2.5">
+                  <FeatureItem>Next.js, React, TypeScript</FeatureItem>
+                  <FeatureItem>SEO, Core Web Vitals 90+</FeatureItem>
+                  <FeatureItem>CMS под редактуру без разработчика</FeatureItem>
+                  <FeatureItem>Аналитика и A/B-тесты</FeatureItem>
+                </ul>
+
+                <div className="mt-auto pt-6">
+                  <MoreLink href="#contact" />
+                </div>
               </div>
 
-              <h3 className="font-heading text-text-primary mt-6 text-2xl font-bold tracking-tight md:text-3xl">
-                Сайты под ключ
-              </h3>
-
-              <p className="text-text-secondary mt-3 text-sm leading-relaxed md:text-base">
-                Лендинги, корпоративные сайты, e-commerce и веб-приложения.
-                Дизайн, разработка, контент и аналитика — собираем под задачу.
-              </p>
-
-              <ul className="mt-6 grid gap-2.5">
-                <FeatureItem>Next.js, React, TypeScript</FeatureItem>
-                <FeatureItem>SEO, Core Web Vitals 90+</FeatureItem>
-                <FeatureItem>CMS под редактуру без разработчика</FeatureItem>
-                <FeatureItem>Аналитика и A/B-тесты</FeatureItem>
-              </ul>
-
-              <div className="mt-auto pt-6">
-                <MoreLink href="#contact" />
+              <div className="relative hidden lg:block">
+                <BrowserMockup />
               </div>
             </div>
-
-            <BrowserMockup />
           </article>
 
           {/* Card 2 — Telegram-боты (1 col, h-480) */}
           <article className={cn(cardBase, "h-[480px]")} id="services-bots">
-            <div className="relative z-10 flex h-full max-w-md flex-col">
+            <div className="relative z-10 flex h-full flex-col">
               <div className={iconWrap}>
                 <Bot className="size-7 text-white" aria-hidden="true" />
               </div>
@@ -180,8 +163,6 @@ export function Services() {
                 <MoreLink href="#contact" />
               </div>
             </div>
-
-            <ChatMockup />
           </article>
 
           {/* Card 3 — Mobile (full width, h-320, horizontal) */}
