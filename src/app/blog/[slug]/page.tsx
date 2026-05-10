@@ -194,9 +194,7 @@ export default async function BlogPostPage({ params }: Props) {
                     <p className="text-text-muted mt-4 text-xs">
                       {formatPostDate(p.date)} · {p.readingTime}
                     </p>
-                    <h3 className="font-heading text-text-primary group-hover:text-brand-magenta mt-2 line-clamp-2 text-base font-semibold transition-colors md:text-lg">
-                      {p.title}
-                    </h3>
+                    <h3 className="sr-only">{p.title}</h3>
                   </Link>
                 </article>
               ))}

@@ -130,10 +130,8 @@ export function BlogList({
                   ) : null}
                   <time dateTime={post.date}>{formatPostDate(post.date)}</time>
                 </div>
-                <h3 className="font-heading text-text-primary group-hover:text-brand-magenta mt-3 line-clamp-2 text-lg font-semibold tracking-tight transition-colors md:text-xl">
-                  {post.title}
-                </h3>
-                <p className="text-text-secondary mt-2 line-clamp-3 text-sm leading-relaxed">
+                <h3 className="sr-only">{post.title}</h3>
+                <p className="text-text-primary group-hover:text-brand-magenta mt-3 line-clamp-3 text-sm leading-relaxed transition-colors">
                   {post.description}
                 </p>
                 <p className="text-text-muted mt-4 text-xs">

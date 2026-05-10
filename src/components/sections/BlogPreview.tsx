@@ -32,11 +32,8 @@ function BlogCard({ post }: { post: BlogPost }) {
             <time dateTime={post.date}>{formatPostDate(post.date)}</time>
           </div>
 
-          <h4 className="font-heading text-text-primary group-hover:text-brand-magenta mt-3 line-clamp-2 text-lg font-semibold tracking-tight transition-colors md:text-xl">
-            {post.title}
-          </h4>
-
-          <p className="text-text-secondary mt-2 line-clamp-3 text-sm leading-relaxed">
+          <h4 className="sr-only">{post.title}</h4>
+          <p className="text-text-primary group-hover:text-brand-magenta mt-3 line-clamp-3 text-sm leading-relaxed transition-colors">
             {post.description}
           </p>
 
