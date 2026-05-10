@@ -91,36 +91,47 @@ function CaseHero({ data }: { data: PortfolioCase }) {
             "border-brand-violet/15 relative mt-12 aspect-[16/9] overflow-hidden rounded-3xl border shadow-glow",
           )}
         >
-          <div
-            aria-hidden="true"
-            className={cn("absolute inset-0 bg-gradient-to-br", data.hero)}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 mix-blend-overlay opacity-50"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 20% 15%, rgba(255,255,255,0.55), transparent 55%), radial-gradient(circle at 85% 85%, rgba(0,0,0,0.35), transparent 55%)",
-            }}
-          />
-          <svg
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full opacity-[0.06] mix-blend-overlay"
-          >
-            <filter id={`hero-noise-${data.slug}`}>
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.85"
-                numOctaves="2"
-                stitchTiles="stitch"
-              />
-            </filter>
-            <rect
-              width="100%"
-              height="100%"
-              filter={`url(#hero-noise-${data.slug})`}
+          {data.cover ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={data.cover}
+              alt={`Превью сайта ${data.client}`}
+              className="absolute inset-0 h-full w-full object-cover"
             />
-          </svg>
+          ) : (
+            <>
+              <div
+                aria-hidden="true"
+                className={cn("absolute inset-0 bg-gradient-to-br", data.hero)}
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 mix-blend-overlay opacity-50"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 20% 15%, rgba(255,255,255,0.55), transparent 55%), radial-gradient(circle at 85% 85%, rgba(0,0,0,0.35), transparent 55%)",
+                }}
+              />
+              <svg
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full opacity-[0.06] mix-blend-overlay"
+              >
+                <filter id={`hero-noise-${data.slug}`}>
+                  <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.85"
+                    numOctaves="2"
+                    stitchTiles="stitch"
+                  />
+                </filter>
+                <rect
+                  width="100%"
+                  height="100%"
+                  filter={`url(#hero-noise-${data.slug})`}
+                />
+              </svg>
+            </>
+          )}
         </div>
       </Container>
     </section>
