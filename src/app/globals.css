@@ -232,25 +232,26 @@
   font-weight: 600;
 }
 
-/* ─── Custom cursor pulse aura ──────────────────────────────── */
-/* Outer ring on cursor follows the mouse via inline translate, so we
-   can't animate transform on it. Nested div with its own transform-scale
-   doesn't conflict — that's the "breathing aura" around the cursor. */
+/* ─── Brand logo breathing ──────────────────────────────────── */
+/* Subtle scale 1 ↔ 1.04 on the gradient square in the header. */
 
-@keyframes kod-cursor-aura {
+@keyframes kod-logo-breathe {
   0%,
   100% {
     transform: scale(1);
-    opacity: 0.6;
   }
   50% {
-    transform: scale(1.5);
-    opacity: 0;
+    transform: scale(1.04);
   }
 }
 
-.kod-cursor-aura {
-  animation: kod-cursor-aura 1.9s ease-out infinite;
+.kod-logo-breathe {
+  animation: kod-logo-breathe 3s ease-in-out infinite;
+}
+
+/* Pause breathing while the logo is hovered so the hover-scale takes over. */
+.group\/logo:hover .kod-logo-breathe {
+  animation: none;
 }
 
 /* ─── Reduced motion ─────────────────────────────────────────── */
@@ -270,7 +271,7 @@
   .animate-float,
   .animate-gradient,
   .animate-glow-pulse,
-  .kod-cursor-aura {
+  .kod-logo-breathe {
     animation: none !important;
   }
 }

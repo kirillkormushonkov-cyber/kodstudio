@@ -19,7 +19,7 @@ export function Logo({ className, href = "/", showWordmark = true }: LogoProps) 
         className,
       )}
     >
-      <span className="bg-gradient-brand shadow-brand grid h-9 w-9 place-items-center rounded-[10px] transition-transform duration-200 group-hover/logo:scale-[1.06] group-focus-visible/logo:ring-2 group-focus-visible/logo:ring-brand-violet/60 group-focus-visible/logo:ring-offset-2 group-focus-visible/logo:ring-offset-bg-base">
+      <span className="bg-gradient-brand shadow-brand kod-logo-breathe grid h-9 w-9 place-items-center rounded-[10px] transition-transform duration-200 group-hover/logo:scale-[1.06] group-focus-visible/logo:ring-2 group-focus-visible/logo:ring-brand-violet/60 group-focus-visible/logo:ring-offset-2 group-focus-visible/logo:ring-offset-bg-base">
         <span className="font-heading text-lg leading-none font-bold text-white">
           K
         </span>
