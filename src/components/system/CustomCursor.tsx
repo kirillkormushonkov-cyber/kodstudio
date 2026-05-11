@@ -76,7 +76,12 @@ export function CustomCursor() {
           "border-brand-violet/70 pointer-events-none fixed top-0 left-0 z-[100] hidden size-9 rounded-full border-2 transition-[width,height,border-color] duration-200 lg:block",
           hovering && "border-brand-violet size-12",
         )}
-      />
+      >
+        <span
+          aria-hidden="true"
+          className="border-brand-violet/50 kod-cursor-aura absolute inset-0 rounded-full border-2"
+        />
+      </div>
       <div
         ref={dotRef}
         aria-hidden="true"

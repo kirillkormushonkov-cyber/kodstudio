@@ -232,35 +232,25 @@
   font-weight: 600;
 }
 
-/* ─── Marquee mark animations ───────────────────────────────── */
-/* "Breathe" — ring slightly scales up and back, inner dot pulses
-   out of phase. Class names prefixed `kod-` so Tailwind 4 doesn't try
-   to interpret `animate-*` as a utility and silently strip our styles. */
+/* ─── Custom cursor pulse aura ──────────────────────────────── */
+/* Outer ring on cursor follows the mouse via inline translate, so we
+   can't animate transform on it. Nested div with its own transform-scale
+   doesn't conflict — that's the "breathing aura" around the cursor. */
 
-@keyframes kod-breathe-ring {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50%      { transform: scale(1.18); opacity: 0.78; }
+@keyframes kod-cursor-aura {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
-@keyframes kod-breathe-dot {
-  0%, 100% { transform: scale(0.85); }
-  50%      { transform: scale(1.25); }
-}
-
-.kod-breathe-ring,
-.kod-breathe-dot {
-  transform-box: fill-box !important;
-  transform-origin: center !important;
-  will-change: transform;
-}
-
-.kod-breathe-ring {
-  animation: kod-breathe-ring 2.8s ease-in-out infinite !important;
-}
-
-.kod-breathe-dot {
-  animation: kod-breathe-dot 2.8s ease-in-out infinite !important;
-  animation-delay: -0.4s !important;
+.kod-cursor-aura {
+  animation: kod-cursor-aura 1.9s ease-out infinite;
 }
 
 /* ─── Reduced motion ─────────────────────────────────────────── */
@@ -280,8 +270,7 @@
   .animate-float,
   .animate-gradient,
   .animate-glow-pulse,
-  .kod-breathe-ring,
-  .kod-breathe-dot {
+  .kod-cursor-aura {
     animation: none !important;
   }
 }
