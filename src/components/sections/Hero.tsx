@@ -18,9 +18,11 @@ const STATS = [
   { value: "24/7", label: "поддержка" },
 ] as const;
 
+// NOTE: no opacity:0 in `hidden` — keeps content visible on SSR if hydration
+// is slow or fails. Animation still works (slide-in via y offset).
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0 },
+  hidden: { y: 24 },
+  show: { y: 0 },
 };
 
 export function Hero() {
