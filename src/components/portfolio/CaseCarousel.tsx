@@ -214,8 +214,9 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
           type="button"
           onClick={prev}
           aria-label="Предыдущий кейс"
-          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute top-1/2 left-2 z-40 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:left-4 md:size-11"
-          animate={reduce ? undefined : { x: [0, -4, 0] }}
+          style={{ top: "50%", y: "-50%" }}
+          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute left-2 z-40 inline-flex size-10 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:left-4 md:size-11"
+          animate={reduce ? { x: 0 } : { x: [0, -4, 0] }}
           transition={
             reduce
               ? undefined
@@ -228,8 +229,9 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
           type="button"
           onClick={next}
           aria-label="Следующий кейс"
-          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute top-1/2 right-2 z-40 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:right-4 md:size-11"
-          animate={reduce ? undefined : { x: [0, 4, 0] }}
+          style={{ top: "50%", y: "-50%" }}
+          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute right-2 z-40 inline-flex size-10 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:right-4 md:size-11"
+          animate={reduce ? { x: 0 } : { x: [0, 4, 0] }}
           transition={
             reduce
               ? undefined
