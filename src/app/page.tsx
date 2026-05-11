@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { BlogPreview } from "@/components/sections/BlogPreview";
 import { ClientsMarquee } from "@/components/sections/ClientsMarquee";
 import { CTASection } from "@/components/sections/CTASection";
@@ -39,7 +41,9 @@ export default async function Home() {
         <TechStack />
       </ScrollReveal>
       <ScrollReveal>
-        <Testimonials />
+        <Suspense fallback={null}>
+          <Testimonials />
+        </Suspense>
       </ScrollReveal>
       <ScrollReveal>
         <BlogPreview />

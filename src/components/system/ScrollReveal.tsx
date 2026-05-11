@@ -28,12 +28,17 @@ export function ScrollReveal({
   as = "div",
 }: ScrollRevealProps) {
   const reduce = useReducedMotion();
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  if (reduce) {
+  // Before hydration or with reduced motion: render plain element so content
+  // is visible even if JS fails or is slow — avoids "invisible page" on SSR.
+  if (reduce || !mounted) {
     return React.createElement(as, { className }, children);
   }
 
-  // motion.div by default — `as` is mostly used for non-motion fallback above.
   return (
     <motion.div
       variants={variants}
