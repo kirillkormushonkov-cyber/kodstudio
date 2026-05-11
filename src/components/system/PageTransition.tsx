@@ -16,11 +16,14 @@ export function PageTransition({
     return <div className="flex flex-1 flex-col">{children}</div>;
   }
 
+  // NOTE: no opacity:0 in initial — иначе SSR-state будет невидимым, и при
+  // первом рендере на проде Vercel (Next.js 16.2.4) виден чёрный экран до
+  // полной гидратации. Оставляем только y-offset для лёгкого slide-in.
   return (
     <motion.div
       key={pathname}
-      initial={{ opacity: 0, y: 4 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ y: 4 }}
+      animate={{ y: 0 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
       className="flex flex-1 flex-col"
     >
