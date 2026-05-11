@@ -54,13 +54,11 @@ export default function BlogIndexPage() {
         </Container>
       </section>
 
-      <ScrollReveal>
-        <section className="pb-20 md:pb-28">
-          <Container>
-            <BlogList posts={posts} tags={tags} />
-          </Container>
-        </section>
-      </ScrollReveal>
+      <section className="pb-20 md:pb-28">
+        <Container>
+          <BlogList posts={posts} tags={tags} />
+        </Container>
+      </section>
 
       <ScrollReveal>
         <CTASection />
