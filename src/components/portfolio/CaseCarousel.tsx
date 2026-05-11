@@ -33,6 +33,9 @@ const FAR_OPACITY = 0.18;
 // переключение состоявшимся. На каждый жест — ровно один шаг.
 const PAN_OFFSET_THRESHOLD = 60;
 const PAN_VELOCITY_THRESHOLD = 350;
+// Hover-триггер: после задержки наведение на соседнюю карточку
+// центрирует её. Задержка не даёт скакать при быстром пролёте курсора.
+const HOVER_DELAY_MS = 220;
 
 export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const [active, setActive] = React.useState(0);
@@ -66,6 +69,17 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
     return () => el.removeEventListener("keydown", onKey);
   }, [next, prev]);
 
+  // Hover-таймер: при наведении на боковую карточку — переключение
+  // после короткой паузы.
+  const hoverTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearHoverTimer = React.useCallback(() => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+  }, []);
+  React.useEffect(() => () => clearHoverTimer(), [clearHoverTimer]);
+
   // Pan gesture — detect swipe без визуального drag (чтобы клик по
   // активной карточке не ломался). Ровно на один соседний блок.
   const triggeredRef = React.useRef(false);
@@ -98,25 +112,22 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
 
   return (
     <div className="relative">
-      <div
+      <motion.div
         ref={containerRef}
         role="region"
         aria-roledescription="carousel"
         aria-label="Кейсы"
         tabIndex={0}
         data-lenis-prevent
-        style={{ perspective: "1100px" }}
+        onPanStart={onPanStart}
+        onPanEnd={onPanEnd}
+        style={{
+          perspective: "1100px",
+          touchAction: "pan-y",
+          transformStyle: "preserve-3d",
+        }}
         className="relative mx-auto h-[460px] w-full overflow-hidden focus:outline-none md:h-[540px] lg:h-[580px]"
       >
-        <motion.div
-          onPanStart={onPanStart}
-          onPanEnd={onPanEnd}
-          className="absolute inset-0"
-          style={{
-            touchAction: "pan-y",
-            transformStyle: "preserve-3d",
-          }}
-        >
           {cases.map((c, i) => {
             const offset = shortestOffset(i, active, total);
             const absOffset = Math.abs(offset);
@@ -152,7 +163,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                 }
                 style={{
                   zIndex,
-                  pointerEvents: isActive ? "auto" : "none",
                   filter: isActive ? undefined : `blur(${absOffset * 2}px)`,
                   transformStyle: "preserve-3d",
                   transformOrigin: "center center",
@@ -169,7 +179,15 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                     <button
                       type="button"
                       onClick={() => goTo(i)}
-                      className="pointer-events-auto block w-full text-left"
+                      onPointerEnter={() => {
+                        clearHoverTimer();
+                        hoverTimerRef.current = setTimeout(
+                          () => goTo(i),
+                          HOVER_DELAY_MS,
+                        );
+                      }}
+                      onPointerLeave={clearHoverTimer}
+                      className="block w-full cursor-pointer text-left"
                       aria-label={`Перейти к кейсу: ${c.title}`}
                       tabIndex={-1}
                     >
@@ -180,8 +198,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
               </motion.div>
             );
           })}
-        </motion.div>
-      </div>
+      </motion.div>
 
       {/* Prev / Next + dots */}
       <div className="mt-6 flex items-center justify-center gap-3">
