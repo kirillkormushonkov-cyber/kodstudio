@@ -120,6 +120,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
         aria-roledescription="carousel"
         aria-label="Кейсы"
         tabIndex={0}
+        data-lenis-prevent
         style={{ perspective: "1400px" }}
         className="relative mx-auto h-[460px] w-full overflow-hidden focus:outline-none md:h-[540px] lg:h-[580px]"
       >
@@ -127,9 +128,13 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
           drag="x"
           dragElastic={0.12}
           dragMomentum={false}
+          dragSnapToOrigin
           onDragEnd={onDragEnd}
           className="absolute inset-0 cursor-grab active:cursor-grabbing"
-          style={{ touchAction: "pan-y" }}
+          style={{
+            touchAction: "pan-y",
+            transformStyle: "preserve-3d",
+          }}
         >
           {cases.map((c, i) => {
             const offset = shortestOffset(i, active, total);
