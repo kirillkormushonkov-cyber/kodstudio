@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { GradientText } from "@/components/ui/gradient-text";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { WordsReveal } from "@/components/system/WordsReveal";
 import { cn } from "@/lib/utils";
 
 const STATS = [
@@ -77,25 +78,24 @@ export function Hero() {
             </Badge>
           </motion.div>
 
-          {/* H1 */}
-          <motion.h1
+          {/* H1 — words reveal one-by-one on mount (≈60ms stagger). */}
+          <h1
             className="font-heading text-text-primary font-semibold leading-[1.04] tracking-tight"
             style={{ fontSize: "clamp(40px, 7vw, 88px)" }}
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <span className="block">Создаём цифровые</span>
-            <span className="block">продукты, которые</span>
+            <span className="block">
+              <WordsReveal text="Создаём цифровые" startDelay={0.1} />
+            </span>
+            <span className="block">
+              <WordsReveal text="продукты, которые" startDelay={0.22} />
+            </span>
             <span className="block">
               <GradientText className="animate-gradient bg-[length:200%_200%]">
-                работают на бизнес
+                <WordsReveal text="работают на бизнес" startDelay={0.34} />
               </GradientText>
               <span className="text-brand-magenta">.</span>
             </span>
-          </motion.h1>
+          </h1>
 
           {/* Subtitle */}
           <motion.p
