@@ -155,7 +155,17 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                   rotateY: rotY,
                   scale,
                   opacity,
+                  filter: isActive ? "blur(0px)" : `blur(${absOffset * 2}px)`,
                 }}
+                whileHover={
+                  isActive || reduce
+                    ? undefined
+                    : {
+                        scale: scale * 1.04,
+                        opacity: 1,
+                        filter: "blur(0px)",
+                      }
+                }
                 transition={
                   reduce
                     ? { duration: 0 }
@@ -163,7 +173,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                 }
                 style={{
                   zIndex,
-                  filter: isActive ? undefined : `blur(${absOffset * 2}px)`,
                   transformStyle: "preserve-3d",
                   transformOrigin: "center center",
                 }}

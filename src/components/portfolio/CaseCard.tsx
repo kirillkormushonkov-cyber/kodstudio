@@ -61,12 +61,6 @@ export function CaseCard({ data }: { data: PortfolioCase }) {
             </>
           )}
 
-          <div className="bg-bg-base/65 absolute inset-0 flex items-center justify-center opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-            <span className="text-text-primary inline-flex items-center gap-2 text-base font-medium">
-              Смотреть кейс
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </span>
-          </div>
         </div>
 
         <div className="mt-5">
@@ -89,6 +83,11 @@ export function CaseCard({ data }: { data: PortfolioCase }) {
               </span>
             ))}
           </div>
+
+          <span className="text-text-primary mt-4 inline-flex items-center gap-1.5 text-sm font-medium opacity-0 transition-all duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+            Смотреть кейс
+            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
         </div>
       </Link>
     </article>
