@@ -81,16 +81,46 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
     return () => el.removeEventListener("keydown", onKey);
   }, [next, prev]);
 
-  // Hover-таймер: при наведении на боковую карточку — переключение
-  // после короткой паузы.
+  // Hover tracking: while the mouse moves over the carousel, repeatedly
+  // pull the card under the cursor into the center after a short debounce.
+  // Эффект — "карусель догоняет курсор": мышь стоит на месте, а активный
+  // блок постоянно подтягивается под него, пока курсор не окажется над
+  // самим центром.
   const hoverTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingIndexRef = React.useRef<number | null>(null);
   const clearHoverTimer = React.useCallback(() => {
     if (hoverTimerRef.current) {
       clearTimeout(hoverTimerRef.current);
       hoverTimerRef.current = null;
     }
+    pendingIndexRef.current = null;
   }, []);
   React.useEffect(() => () => clearHoverTimer(), [clearHoverTimer]);
+
+  const onPointerMoveCarousel = React.useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!hoverCapable || e.pointerType !== "mouse") return;
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const card = target.closest<HTMLElement>("[data-card-index]");
+      if (!card) return;
+      const idx = Number(card.dataset.cardIndex);
+      if (Number.isNaN(idx)) return;
+      if (idx === active) {
+        clearHoverTimer();
+        return;
+      }
+      if (pendingIndexRef.current === idx) return;
+      clearHoverTimer();
+      pendingIndexRef.current = idx;
+      hoverTimerRef.current = setTimeout(() => {
+        goTo(idx);
+        pendingIndexRef.current = null;
+        hoverTimerRef.current = null;
+      }, HOVER_DELAY_MS);
+    },
+    [hoverCapable, active, clearHoverTimer, goTo],
+  );
 
   // Pan gesture — detect swipe без визуального drag (чтобы клик по
   // активной карточке не ломался). Ровно на один соседний блок.
@@ -133,6 +163,8 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
         data-lenis-prevent
         onPanStart={onPanStart}
         onPanEnd={onPanEnd}
+        onPointerMove={onPointerMoveCarousel}
+        onPointerLeave={clearHoverTimer}
         style={{
           perspective: "1100px",
           touchAction: "pan-y",
@@ -189,6 +221,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                   transformOrigin: "center center",
                 }}
                 className="absolute inset-x-0 top-0 mx-auto h-full w-[min(86%,600px)]"
+                data-card-index={i}
                 aria-hidden={!isActive}
                 aria-roledescription="slide"
                 aria-label={`${i + 1} из ${total}: ${c.title}`}
@@ -200,20 +233,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                     <button
                       type="button"
                       onClick={() => goTo(i)}
-                      onPointerEnter={
-                        hoverCapable
-                          ? () => {
-                              clearHoverTimer();
-                              hoverTimerRef.current = setTimeout(
-                                () => goTo(i),
-                                HOVER_DELAY_MS,
-                              );
-                            }
-                          : undefined
-                      }
-                      onPointerLeave={
-                        hoverCapable ? clearHoverTimer : undefined
-                      }
                       className="block w-full cursor-pointer text-left"
                       aria-label={`Перейти к кейсу: ${c.title}`}
                       tabIndex={-1}
