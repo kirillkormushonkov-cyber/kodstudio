@@ -84,14 +84,14 @@ export function Hero() {
             style={{ fontSize: "clamp(40px, 7vw, 88px)" }}
           >
             <span className="block">
-              <WordsReveal text="Создаём цифровые" startDelay={0.1} />
+              <WordsReveal text="Создаём цифровые" startDelay={0.15} />
             </span>
             <span className="block">
-              <WordsReveal text="продукты, которые" startDelay={0.22} />
+              <WordsReveal text="продукты, которые" startDelay={0.35} />
             </span>
             <span className="block">
               <GradientText className="animate-gradient bg-[length:200%_200%]">
-                <WordsReveal text="работают на бизнес" startDelay={0.34} />
+                <WordsReveal text="работают на бизнес" startDelay={0.55} />
               </GradientText>
               <span className="text-brand-magenta">.</span>
             </span>
