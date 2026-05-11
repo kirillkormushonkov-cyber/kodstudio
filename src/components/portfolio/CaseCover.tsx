@@ -135,53 +135,93 @@ function AppMock({ data }: { data: PortfolioCase }) {
   const tabs = ["Главная", "Профиль", "Ещё"];
   return (
     <div className="absolute inset-0 grid place-items-center px-4 py-3">
-      <div className="relative flex h-full w-[55%] min-w-[140px] max-w-[230px] flex-col overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-[2px] sm:w-[45%]">
-        {/* Status bar / notch */}
-        <div className="relative flex items-center justify-between px-3 py-1.5">
-          <span className="font-mono text-[9px] font-semibold text-white/85">
-            9:41
-          </span>
-          <div className="absolute left-1/2 top-1.5 h-1.5 w-10 -translate-x-1/2 rounded-full bg-black/40" />
-          <div className="flex gap-1">
-            <span className="h-1 w-3 rounded-sm bg-white/70" />
-            <span className="h-1 w-1.5 rounded-sm bg-white/70" />
-            <span className="h-1 w-2 rounded-sm bg-white/70" />
-          </div>
-        </div>
-        {/* Content */}
-        <div className="flex flex-1 flex-col gap-1.5 px-3 pb-1">
-          <div className="flex items-baseline justify-between">
-            <span className="font-heading text-xl font-bold leading-none tracking-tight text-white drop-shadow-sm sm:text-2xl">
-              {initials}
+      {/* Phone body (dark bezel) — solid, real-looking */}
+      <div className="relative h-full w-[55%] min-w-[140px] max-w-[230px] rounded-[28px] bg-zinc-950 p-[6px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.55),inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:w-[45%] sm:rounded-[32px] sm:p-[7px]">
+        {/* Side buttons */}
+        <span
+          aria-hidden="true"
+          className="absolute -left-[2px] top-[24%] h-8 w-[2px] rounded-l-md bg-zinc-700"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute -left-[2px] top-[36%] h-12 w-[2px] rounded-l-md bg-zinc-700"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute -right-[2px] top-[30%] h-14 w-[2px] rounded-r-md bg-zinc-700"
+        />
+
+        {/* Screen */}
+        <div className="relative flex h-full w-full flex-col overflow-hidden rounded-[22px] bg-zinc-900 sm:rounded-[26px]">
+          {/* Subtle wallpaper gradient inside the screen — using case hero colors */}
+          <div
+            aria-hidden="true"
+            className={cn(
+              "absolute inset-0 bg-gradient-to-br opacity-90",
+              data.hero,
+            )}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-black/30"
+          />
+
+          {/* Dynamic island (notch replacement) */}
+          <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-1.5 z-10 h-3 w-12 -translate-x-1/2 rounded-full bg-black sm:h-4 sm:w-16"
+          />
+
+          {/* Status bar */}
+          <div className="relative z-10 flex items-center justify-between px-3 py-1.5">
+            <span className="font-mono text-[9px] font-semibold text-white">
+              9:41
             </span>
-            <span className="font-mono text-[9px] text-white/70">
-              {data.year}
-            </span>
-          </div>
-          <p className="font-heading line-clamp-2 text-[10px] font-semibold leading-snug text-white/95">
-            {data.client}
-          </p>
-          <div className="mt-1 space-y-1">
-            <div className="rounded-md bg-white/20 px-2 py-1 text-[9px] font-medium text-white/95">
-              Заказы
-            </div>
-            <div className="rounded-md bg-white/15 px-2 py-1 text-[9px] font-medium text-white/85">
-              Каталог
-            </div>
-            <div className="rounded-md bg-white/15 px-2 py-1 text-[9px] font-medium text-white/85">
-              Уведомления
+            <span className="size-3" /> {/* spacer for notch */}
+            <div className="flex items-center gap-1">
+              <span className="h-1 w-3 rounded-sm bg-white" />
+              <span className="h-1 w-1.5 rounded-sm bg-white/85" />
+              <span className="h-1 w-2 rounded-sm bg-white/85" />
             </div>
           </div>
-          {/* Tab bar */}
-          <div className="mt-auto flex justify-around border-t border-white/15 pt-1.5 text-[8px] font-medium uppercase tracking-wider text-white/70">
-            {tabs.map((t, i) => (
-              <span
-                key={t}
-                className={cn(i === 0 ? "text-white" : "text-white/55")}
-              >
-                {t}
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-1 flex-col gap-1.5 px-3 pb-1 pt-1">
+            <div className="flex items-baseline justify-between">
+              <span className="font-heading text-xl font-bold leading-none tracking-tight text-white drop-shadow-sm sm:text-2xl">
+                {initials}
               </span>
-            ))}
+              <span className="font-mono text-[9px] text-white/80">
+                {data.year}
+              </span>
+            </div>
+            <p className="font-heading line-clamp-2 text-[10px] font-semibold leading-snug text-white">
+              {data.client}
+            </p>
+            <div className="mt-1 space-y-1">
+              <div className="rounded-md bg-white/25 px-2 py-1 text-[9px] font-medium text-white shadow-sm">
+                Заказы
+              </div>
+              <div className="rounded-md bg-white/15 px-2 py-1 text-[9px] font-medium text-white/90">
+                Каталог
+              </div>
+              <div className="rounded-md bg-white/15 px-2 py-1 text-[9px] font-medium text-white/90">
+                Уведомления
+              </div>
+            </div>
+            {/* Tab bar */}
+            <div className="mt-auto flex justify-around border-t border-white/20 pt-1.5 text-[8px] font-medium uppercase tracking-wider text-white/75">
+              {tabs.map((t, i) => (
+                <span key={t} className={cn(i === 0 ? "text-white" : "text-white/55")}>
+                  {t}
+                </span>
+              ))}
+            </div>
+            {/* Home indicator */}
+            <div
+              aria-hidden="true"
+              className="mx-auto mb-1 mt-1 h-0.5 w-12 rounded-full bg-white/60"
+            />
           </div>
         </div>
       </div>
