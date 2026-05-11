@@ -1,7 +1,20 @@
 import * as React from "react";
+import {
+  Bot,
+  Globe,
+  Smartphone,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 
 import type { PortfolioCase } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
+
+const CATEGORY_ICON: Record<string, LucideIcon> = {
+  Сайты: Globe,
+  Боты: Bot,
+  Приложения: Smartphone,
+};
 
 function getInitials(client: string): string {
   const stripped = client
@@ -42,18 +55,34 @@ export function CaseCover({ data }: { data: PortfolioCase }) {
   const initials = getInitials(data.client || data.title);
   const topMetric = data.metrics[0];
   const tags = data.stack.slice(0, 3);
+  const CategoryIcon = CATEGORY_ICON[data.category] ?? Sparkles;
 
   return (
     <div
       aria-hidden="true"
       className="absolute inset-0 grid grid-cols-4 grid-rows-2 gap-2 p-3 sm:gap-2.5 sm:p-4"
     >
-      {/* Monogram + client */}
-      <Tile className="col-span-2 row-span-2 flex flex-col justify-between">
-        <span className="font-heading text-3xl font-bold leading-none tracking-tight text-white drop-shadow-sm sm:text-4xl md:text-5xl">
+      {/* Monogram + category glyph + client */}
+      <Tile className="relative col-span-2 row-span-2 flex flex-col justify-between overflow-hidden">
+        {/* Decorative dot grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px)",
+            backgroundSize: "12px 12px",
+          }}
+        />
+        {/* Big category icon (subtle, behind text) */}
+        <CategoryIcon
+          aria-hidden="true"
+          strokeWidth={1.4}
+          className="pointer-events-none absolute -right-3 -bottom-3 size-24 text-white/15 sm:size-32 md:size-40"
+        />
+        <span className="font-heading relative text-3xl font-bold leading-none tracking-tight text-white drop-shadow-sm sm:text-4xl md:text-5xl">
           {initials}
         </span>
-        <span className="line-clamp-2 text-[10px] font-medium uppercase tracking-wider text-white/80 sm:text-xs">
+        <span className="relative line-clamp-2 text-[10px] font-medium uppercase tracking-wider text-white/80 sm:text-xs">
           {data.client}
         </span>
       </Tile>
