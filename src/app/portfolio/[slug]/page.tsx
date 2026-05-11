@@ -2,7 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 
 import { WordsReveal } from "@/components/system/WordsReveal";
 import { Badge } from "@/components/ui/badge";
@@ -134,6 +134,21 @@ function CaseHero({ data }: { data: PortfolioCase }) {
             </>
           )}
         </div>
+
+        {data.liveUrl && (
+          <a
+            href={data.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group/live mt-5 inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-text-primary"
+          >
+            <span className="text-text-muted">Открыть сайт:</span>
+            <span className="font-mono text-brand-violet underline-offset-4 group-hover/live:underline">
+              {data.liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+            </span>
+            <ArrowUpRight className="size-4 text-brand-violet transition-transform duration-200 group-hover/live:-translate-y-0.5 group-hover/live:translate-x-0.5" />
+          </a>
+        )}
       </Container>
     </section>
   );

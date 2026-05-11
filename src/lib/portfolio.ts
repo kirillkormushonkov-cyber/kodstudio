@@ -23,6 +23,8 @@ export type PortfolioCase = {
   hero: string;
   /** Optional path to a real cover image (overrides the bento composition). */
   cover?: string;
+  /** Public URL of the live site/product, if exists. */
+  liveUrl?: string;
   stack: string[];
   metrics: CaseMetric[];
   task: string;
@@ -54,6 +56,7 @@ function readCase(file: string): PortfolioCase {
     year: typeof data.year === "number" ? data.year : Number(data.year) || 0,
     hero: asString(data.hero) || "from-brand-violet to-brand-pink",
     cover: asString(data.cover) || undefined,
+    liveUrl: asString(data.liveUrl) || undefined,
     stack: asArray<string>(data.stack),
     metrics: asArray<CaseMetric>(data.metrics),
     task: asString(data.task),
