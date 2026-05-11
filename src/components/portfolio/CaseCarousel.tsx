@@ -43,6 +43,18 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const total = cases.length;
   const reduce = useReducedMotion();
 
+  // Detect real-cursor devices so that hover-to-center doesn't fight
+  // against touch swipes on mobile (synthetic pointerenter after tap
+  // would otherwise queue a goTo while the user is still swiping).
+  const [hoverCapable, setHoverCapable] = React.useState(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    setHoverCapable(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setHoverCapable(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   React.useEffect(() => {
     if (active >= total && total > 0) setActive(0);
   }, [active, total]);
@@ -169,7 +181,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                 transition={
                   reduce
                     ? { duration: 0 }
-                    : { duration: 0.9, ease: [0.4, 0, 0.2, 1] }
+                    : { duration: 0.55, ease: [0.4, 0, 0.2, 1] }
                 }
                 style={{
                   zIndex,
@@ -188,14 +200,20 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                     <button
                       type="button"
                       onClick={() => goTo(i)}
-                      onPointerEnter={() => {
-                        clearHoverTimer();
-                        hoverTimerRef.current = setTimeout(
-                          () => goTo(i),
-                          HOVER_DELAY_MS,
-                        );
-                      }}
-                      onPointerLeave={clearHoverTimer}
+                      onPointerEnter={
+                        hoverCapable
+                          ? () => {
+                              clearHoverTimer();
+                              hoverTimerRef.current = setTimeout(
+                                () => goTo(i),
+                                HOVER_DELAY_MS,
+                              );
+                            }
+                          : undefined
+                      }
+                      onPointerLeave={
+                        hoverCapable ? clearHoverTimer : undefined
+                      }
                       className="block w-full cursor-pointer text-left"
                       aria-label={`Перейти к кейсу: ${c.title}`}
                       tabIndex={-1}
