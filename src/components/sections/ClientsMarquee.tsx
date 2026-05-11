@@ -15,14 +15,14 @@ const MARKS: ReadonlyArray<React.ComponentType<MarkProps>> = [
         r="9"
         stroke="currentColor"
         strokeWidth="2"
-        className="animate-breathe-ring"
+        className="kod-breathe-ring"
       />
       <circle
         cx="12"
         cy="12"
         r="3.5"
         fill="currentColor"
-        className="animate-breathe-dot"
+        className="kod-breathe-dot"
       />
     </svg>
   ),

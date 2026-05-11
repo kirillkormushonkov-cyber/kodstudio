@@ -234,33 +234,33 @@
 
 /* ─── Marquee mark animations ───────────────────────────────── */
 /* "Breathe" — ring slightly scales up and back, inner dot pulses
-   slightly out of phase. Transform-based so it works in every
-   browser (SVG `r` attribute animation is not universally supported). */
+   out of phase. Class names prefixed `kod-` so Tailwind 4 doesn't try
+   to interpret `animate-*` as a utility and silently strip our styles. */
 
-@keyframes breathe-ring {
+@keyframes kod-breathe-ring {
   0%, 100% { transform: scale(1); opacity: 1; }
   50%      { transform: scale(1.18); opacity: 0.78; }
 }
 
-@keyframes breathe-dot {
+@keyframes kod-breathe-dot {
   0%, 100% { transform: scale(0.85); }
   50%      { transform: scale(1.25); }
 }
 
-.animate-breathe-ring,
-.animate-breathe-dot {
-  transform-box: fill-box;
-  transform-origin: center;
+.kod-breathe-ring,
+.kod-breathe-dot {
+  transform-box: fill-box !important;
+  transform-origin: center !important;
   will-change: transform;
 }
 
-.animate-breathe-ring {
-  animation: breathe-ring 2.8s ease-in-out infinite;
+.kod-breathe-ring {
+  animation: kod-breathe-ring 2.8s ease-in-out infinite !important;
 }
 
-.animate-breathe-dot {
-  animation: breathe-dot 2.8s ease-in-out infinite;
-  animation-delay: -0.4s;
+.kod-breathe-dot {
+  animation: kod-breathe-dot 2.8s ease-in-out infinite !important;
+  animation-delay: -0.4s !important;
 }
 
 /* ─── Reduced motion ─────────────────────────────────────────── */
@@ -280,8 +280,8 @@
   .animate-float,
   .animate-gradient,
   .animate-glow-pulse,
-  .animate-breathe-ring,
-  .animate-breathe-dot {
+  .kod-breathe-ring,
+  .kod-breathe-dot {
     animation: none !important;
   }
 }
