@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, type PanInfo } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { CaseCard } from "@/components/portfolio/CaseCard";
 import type { PortfolioCase } from "@/lib/portfolio";
@@ -207,6 +207,30 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
               </motion.div>
             );
           })}
+
+        {/* Mobile swipe affordance — мягко пульсирующие стрелки по бокам */}
+        {!reduce && (
+          <>
+            <motion.div
+              aria-hidden="true"
+              className="bg-bg-base/40 text-text-primary pointer-events-none absolute top-1/2 left-2 z-40 -translate-y-1/2 rounded-full p-1.5 backdrop-blur md:hidden"
+              initial={{ opacity: 0.5 }}
+              animate={{ x: [0, -4, 0], opacity: [0.5, 0.9, 0.5] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ChevronLeft className="size-4" />
+            </motion.div>
+            <motion.div
+              aria-hidden="true"
+              className="bg-bg-base/40 text-text-primary pointer-events-none absolute top-1/2 right-2 z-40 -translate-y-1/2 rounded-full p-1.5 backdrop-blur md:hidden"
+              initial={{ opacity: 0.5 }}
+              animate={{ x: [0, 4, 0], opacity: [0.5, 0.9, 0.5] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ChevronRight className="size-4" />
+            </motion.div>
+          </>
+        )}
       </motion.div>
 
       {/* Prev / Next + dots */}
