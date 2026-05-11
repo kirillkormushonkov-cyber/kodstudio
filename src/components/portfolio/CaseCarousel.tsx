@@ -21,9 +21,9 @@ function shortestOffset(index: number, active: number, total: number): number {
 // Карусель «обнимает невидимый шар»: каждая карточка получает translateZ
 // (глубина) + rotateY (поворот в сторону центра) + translateX (разнос).
 const VISIBLE_NEIGHBORS = 2;
-const X_STEP_PERCENT = 78;
-const Z_STEP_PX = 140;
-const ROT_STEP_DEG = 30;
+const X_STEP_PERCENT = 80;
+const Z_STEP_PX = 200;
+const ROT_STEP_DEG = 40;
 const SCALE_STEP = 0.08;
 const ACTIVE_OPACITY = 1;
 const NEIGHBOR_OPACITY = 0.5;
@@ -33,10 +33,6 @@ const FAR_OPACITY = 0.18;
 // переключение состоявшимся. На каждый жест — ровно один шаг.
 const DRAG_OFFSET_THRESHOLD = 80;
 const DRAG_VELOCITY_THRESHOLD = 400;
-// Wheel/trackpad: между переключениями выдерживаем cooldown, чтобы одно
-// «прокрутил пальцем» не пролистывало пять карточек.
-const WHEEL_COOLDOWN_MS = 600;
-const WHEEL_DELTA_THRESHOLD = 30;
 
 export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const [active, setActive] = React.useState(0);
@@ -57,25 +53,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   );
   const next = React.useCallback(() => goTo(active + 1), [active, goTo]);
   const prev = React.useCallback(() => goTo(active - 1), [active, goTo]);
-
-  // Wheel / trackpad: один жест = один шаг (cooldown отсекает повторы).
-  React.useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    let lastTrigger = 0;
-    const onWheel = (e: WheelEvent) => {
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      if (Math.abs(delta) < WHEEL_DELTA_THRESHOLD) return;
-      const now = Date.now();
-      if (now - lastTrigger < WHEEL_COOLDOWN_MS) return;
-      e.preventDefault();
-      lastTrigger = now;
-      if (delta > 0) next();
-      else prev();
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [next, prev]);
 
   // Keyboard arrows
   React.useEffect(() => {
@@ -121,7 +98,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
         aria-label="Кейсы"
         tabIndex={0}
         data-lenis-prevent
-        style={{ perspective: "1400px" }}
+        style={{ perspective: "1600px" }}
         className="relative mx-auto h-[460px] w-full overflow-hidden focus:outline-none md:h-[540px] lg:h-[580px]"
       >
         <motion.div
@@ -167,7 +144,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                 transition={
                   reduce
                     ? { duration: 0 }
-                    : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+                    : { duration: 0.9, ease: [0.4, 0, 0.2, 1] }
                 }
                 style={{
                   zIndex,
