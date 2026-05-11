@@ -2,17 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, type PanInfo } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { CaseCard } from "@/components/portfolio/CaseCard";
 import type { PortfolioCase } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
-/**
- * Compute shortest signed offset between two indices on a wrap-around list.
- * E.g. with 6 items, getOffset(0, 5) === -1, not 5.
- */
 function shortestOffset(index: number, active: number, total: number): number {
   if (total <= 0) return 0;
   const direct = index - active;
@@ -22,17 +18,25 @@ function shortestOffset(index: number, active: number, total: number): number {
   return direct;
 }
 
-const VISIBLE_NEIGHBORS = 2; // how many cases on each side stay rendered
-const ACTIVE_SCALE = 1.06;
-const NEIGHBOR_SCALE = 0.74;
-const FAR_SCALE = 0.58;
-const X_STEP_PERCENT = 62;
+// Карусель «обнимает невидимый шар»: каждая карточка получает translateZ
+// (глубина) + rotateY (поворот в сторону центра) + translateX (разнос).
+const VISIBLE_NEIGHBORS = 2;
+const X_STEP_PERCENT = 78;
+const Z_STEP_PX = 140;
+const ROT_STEP_DEG = 30;
+const SCALE_STEP = 0.08;
 const ACTIVE_OPACITY = 1;
-const NEIGHBOR_OPACITY = 0.42;
+const NEIGHBOR_OPACITY = 0.5;
 const FAR_OPACITY = 0.18;
-const Z_STEP = 10;
-const MOUSE_COOLDOWN_MS = 950;
-const EDGE_TRIGGER_PCT = 0.14;
+
+// Drag threshold: смещение или скорость свайпа, после которых считаем
+// переключение состоявшимся. На каждый жест — ровно один шаг.
+const DRAG_OFFSET_THRESHOLD = 80;
+const DRAG_VELOCITY_THRESHOLD = 400;
+// Wheel/trackpad: между переключениями выдерживаем cooldown, чтобы одно
+// «прокрутил пальцем» не пролистывало пять карточек.
+const WHEEL_COOLDOWN_MS = 600;
+const WHEEL_DELTA_THRESHOLD = 30;
 
 export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const [active, setActive] = React.useState(0);
@@ -40,7 +44,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const total = cases.length;
   const reduce = useReducedMotion();
 
-  // Clamp when the list shrinks (e.g. when a filter changes).
   React.useEffect(() => {
     if (active >= total && total > 0) setActive(0);
   }, [active, total]);
@@ -55,34 +58,26 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const next = React.useCallback(() => goTo(active + 1), [active, goTo]);
   const prev = React.useCallback(() => goTo(active - 1), [active, goTo]);
 
-  // Mouse-driven navigation: cursor in the left/right edge zone of the
-  // carousel triggers prev/next with a cooldown so it doesn't jitter.
+  // Wheel / trackpad: один жест = один шаг (cooldown отсекает повторы).
   React.useEffect(() => {
-    if (reduce) return;
     const el = containerRef.current;
     if (!el) return;
     let lastTrigger = 0;
-
-    const onMove = (e: MouseEvent) => {
+    const onWheel = (e: WheelEvent) => {
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) < WHEEL_DELTA_THRESHOLD) return;
       const now = Date.now();
-      if (now - lastTrigger < MOUSE_COOLDOWN_MS) return;
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const pct = x / rect.width;
-      if (pct >= 1 - EDGE_TRIGGER_PCT) {
-        lastTrigger = now;
-        next();
-      } else if (pct <= EDGE_TRIGGER_PCT) {
-        lastTrigger = now;
-        prev();
-      }
+      if (now - lastTrigger < WHEEL_COOLDOWN_MS) return;
+      e.preventDefault();
+      lastTrigger = now;
+      if (delta > 0) next();
+      else prev();
     };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [next, prev]);
 
-    el.addEventListener("mousemove", onMove);
-    return () => el.removeEventListener("mousemove", onMove);
-  }, [reduce, next, prev]);
-
-  // Keyboard arrows when carousel is focused.
+  // Keyboard arrows
   React.useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -93,6 +88,21 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
     el.addEventListener("keydown", onKey);
     return () => el.removeEventListener("keydown", onKey);
   }, [next, prev]);
+
+  // Drag / swipe — ровно на один соседний блок.
+  const onDragEnd = (
+    _e: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
+    const offset = info.offset.x;
+    const velocity = info.velocity.x;
+    const isSwipe =
+      Math.abs(offset) > DRAG_OFFSET_THRESHOLD ||
+      Math.abs(velocity) > DRAG_VELOCITY_THRESHOLD;
+    if (!isSwipe) return;
+    if (offset < 0 || velocity < 0) next();
+    else prev();
+  };
 
   if (total === 0) {
     return (
@@ -110,68 +120,84 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
         aria-roledescription="carousel"
         aria-label="Кейсы"
         tabIndex={0}
-        className="relative mx-auto h-[440px] w-full overflow-hidden focus:outline-none md:h-[520px] lg:h-[560px]"
+        style={{ perspective: "1400px" }}
+        className="relative mx-auto h-[460px] w-full overflow-hidden focus:outline-none md:h-[540px] lg:h-[580px]"
       >
-        {cases.map((c, i) => {
-          const offset = shortestOffset(i, active, total);
-          const absOffset = Math.abs(offset);
-          if (absOffset > VISIBLE_NEIGHBORS) return null;
+        <motion.div
+          drag="x"
+          dragElastic={0.12}
+          dragMomentum={false}
+          onDragEnd={onDragEnd}
+          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          style={{ touchAction: "pan-y" }}
+        >
+          {cases.map((c, i) => {
+            const offset = shortestOffset(i, active, total);
+            const absOffset = Math.abs(offset);
+            if (absOffset > VISIBLE_NEIGHBORS) return null;
 
-          const isActive = offset === 0;
-          const x = offset * X_STEP_PERCENT;
-          const scale = isActive
-            ? ACTIVE_SCALE
-            : absOffset === 1
-              ? NEIGHBOR_SCALE
-              : FAR_SCALE;
-          const opacity = isActive
-            ? ACTIVE_OPACITY
-            : absOffset === 1
-              ? NEIGHBOR_OPACITY
-              : FAR_OPACITY;
-          const z = Math.max(1, 30 - absOffset * Z_STEP);
+            const isActive = offset === 0;
+            const x = offset * X_STEP_PERCENT;
+            const z = -absOffset * Z_STEP_PX;
+            const rotY = -offset * ROT_STEP_DEG;
+            const scale = 1 - absOffset * SCALE_STEP;
+            const opacity = isActive
+              ? ACTIVE_OPACITY
+              : absOffset === 1
+                ? NEIGHBOR_OPACITY
+                : FAR_OPACITY;
+            const zIndex = Math.max(1, 30 - absOffset * 10);
 
-          return (
-            <motion.div
-              key={c.slug}
-              initial={false}
-              animate={{ x: `${x}%`, scale, opacity }}
-              transition={
-                reduce
-                  ? { duration: 0 }
-                  : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
-              }
-              style={{
-                zIndex: z,
-                pointerEvents: isActive ? "auto" : "none",
-                filter: isActive ? undefined : `blur(${absOffset * 2}px)`,
-              }}
-              className="absolute inset-x-0 top-0 mx-auto h-full w-[min(90%,640px)]"
-              aria-hidden={!isActive}
-              aria-roledescription="slide"
-              aria-label={`${i + 1} из ${total}: ${c.title}`}
-            >
-              <div className="h-full">
-                {isActive ? (
-                  <CaseCard data={c} />
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => goTo(i)}
-                    className="pointer-events-auto block w-full text-left"
-                    aria-label={`Перейти к кейсу: ${c.title}`}
-                    tabIndex={-1}
-                  >
+            return (
+              <motion.div
+                key={c.slug}
+                initial={false}
+                animate={{
+                  x: `${x}%`,
+                  z,
+                  rotateY: rotY,
+                  scale,
+                  opacity,
+                }}
+                transition={
+                  reduce
+                    ? { duration: 0 }
+                    : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+                }
+                style={{
+                  zIndex,
+                  pointerEvents: isActive ? "auto" : "none",
+                  filter: isActive ? undefined : `blur(${absOffset * 2}px)`,
+                  transformStyle: "preserve-3d",
+                  transformOrigin: "center center",
+                }}
+                className="absolute inset-x-0 top-0 mx-auto h-full w-[min(86%,600px)]"
+                aria-hidden={!isActive}
+                aria-roledescription="slide"
+                aria-label={`${i + 1} из ${total}: ${c.title}`}
+              >
+                <div className="h-full">
+                  {isActive ? (
                     <CaseCard data={c} />
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          );
-        })}
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => goTo(i)}
+                      className="pointer-events-auto block w-full text-left"
+                      aria-label={`Перейти к кейсу: ${c.title}`}
+                      tabIndex={-1}
+                    >
+                      <CaseCard data={c} />
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
 
-      {/* Prev / Next controls */}
+      {/* Prev / Next + dots */}
       <div className="mt-6 flex items-center justify-center gap-3">
         <button
           type="button"
