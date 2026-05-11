@@ -208,13 +208,17 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
             );
           })}
 
-        {/* Side controls — функциональные prev/next по центру высоты,
-            на мобилке с мягкой pulse-анимацией для подсказки про свайп */}
+      </motion.div>
+
+      {/* Side controls — wrapper recreates the active cover's aspect-ratio
+          so the buttons sit at the visual middle of the cover image, not
+          the full carousel height (which also contains meta+tags below). */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-40 mx-auto aspect-[16/10] w-[min(86%,600px)]">
         <motion.button
           type="button"
           onClick={prev}
           aria-label="Предыдущий кейс"
-          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute inset-y-0 left-2 z-40 my-auto inline-flex size-10 h-fit items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:left-4 md:size-11"
+          className="pointer-events-auto bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute inset-y-0 left-2 my-auto inline-flex size-10 h-fit items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:left-4 md:size-11"
           animate={reduce ? { x: 0 } : { x: [0, -4, 0] }}
           transition={
             reduce
@@ -228,7 +232,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
           type="button"
           onClick={next}
           aria-label="Следующий кейс"
-          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute inset-y-0 right-2 z-40 my-auto inline-flex size-10 h-fit items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:right-4 md:size-11"
+          className="pointer-events-auto bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute inset-y-0 right-2 my-auto inline-flex size-10 h-fit items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:right-4 md:size-11"
           animate={reduce ? { x: 0 } : { x: [0, 4, 0] }}
           transition={
             reduce
@@ -238,7 +242,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
         >
           <ChevronRight className="size-5" />
         </motion.button>
-      </motion.div>
+      </div>
 
       {/* Dots + «Все кейсы» */}
       <div className="mt-6 flex items-center justify-center gap-3">
