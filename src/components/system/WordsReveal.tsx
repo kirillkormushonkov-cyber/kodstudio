@@ -37,8 +37,8 @@ export type WordsRevealProps = {
 export function WordsReveal({
   text,
   startDelay = 0,
-  perWordDelay = 0.09,
-  duration = 0.9,
+  perWordDelay = 0.14,
+  duration = 1.35,
   className,
   wordClassName,
   fromX = 0,
@@ -92,12 +92,13 @@ export function WordsReveal({
                 ? `inline-block ${wordClassName}`
                 : "inline-block"
             }
-            initial={{ opacity: 0, x: fromX, y: fromY, filter: "blur(6px)" }}
+            initial={{ opacity: 0, x: fromX, y: fromY, filter: "blur(3px)" }}
             animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
             transition={{
               duration,
               delay,
-              ease: [0.16, 1, 0.3, 1],
+              // ease-out-quint — очень плавное замедление в конце
+              ease: [0.22, 1, 0.36, 1],
             }}
           >
             {part}
