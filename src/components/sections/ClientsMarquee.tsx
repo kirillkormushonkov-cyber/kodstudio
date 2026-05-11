@@ -6,11 +6,24 @@ import { cn } from "@/lib/utils";
 type MarkProps = { className?: string };
 
 const MARKS: ReadonlyArray<React.ComponentType<MarkProps>> = [
-  // 0 — circle ring with inner dot
+  // 0 — circle ring with inner dot, breathing animation
   ({ className }: MarkProps) => (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
-      <circle cx="12" cy="12" r="3.5" fill="currentColor" />
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="animate-breathe-ring"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="3.5"
+        fill="currentColor"
+        className="animate-breathe-dot"
+      />
     </svg>
   ),
   // 1 — 4-dot cluster

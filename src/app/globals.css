@@ -232,6 +232,31 @@
   font-weight: 600;
 }
 
+/* ─── Marquee mark animations ───────────────────────────────── */
+/* "Breathe" — ring slightly expands and contracts while the inner
+   dot pulses. SVG `r` attribute is animatable in modern browsers via
+   CSS, so no JS / framer needed (keeps marquee marks server-rendered). */
+
+@keyframes breathe-ring {
+  0%, 100% { r: 9; opacity: 1; }
+  50% { r: 10.2; opacity: 0.82; }
+}
+
+@keyframes breathe-dot {
+  0%, 100% { r: 3.2; }
+  50% { r: 4.4; }
+}
+
+.animate-breathe-ring {
+  animation: breathe-ring 3s ease-in-out infinite;
+  transform-box: fill-box;
+}
+
+.animate-breathe-dot {
+  animation: breathe-dot 3s ease-in-out infinite;
+  transform-box: fill-box;
+}
+
 /* ─── Reduced motion ─────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
@@ -248,7 +273,9 @@
   .animate-marquee,
   .animate-float,
   .animate-gradient,
-  .animate-glow-pulse {
+  .animate-glow-pulse,
+  .animate-breathe-ring,
+  .animate-breathe-dot {
     animation: none !important;
   }
 }
