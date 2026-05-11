@@ -12,6 +12,8 @@ export async function GET(request: NextRequest) {
   const isThumb = searchParams.get("size") === "thumb";
   const width = isThumb ? 600 : 1200;
   const height = isThumb ? 315 : 630;
+  // Scale all typography proportionally so thumb-mode keeps the same look.
+  const k = isThumb ? 0.5 : 1;
 
   return new ImageResponse(
     (
@@ -22,7 +24,7 @@ export async function GET(request: NextRequest) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: 80,
+          padding: 80 * k,
           background:
             "radial-gradient(ellipse at top left, rgba(107,91,255,0.45), transparent 55%), radial-gradient(ellipse at bottom right, rgba(232,121,249,0.4), transparent 55%), #0A0A14",
           color: "#F4F4F8",
@@ -30,17 +32,17 @@ export async function GET(request: NextRequest) {
         }}
       >
         {/* Top: brand */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 * k }}>
           <div
             style={{
-              width: 56,
-              height: 56,
-              borderRadius: 14,
+              width: 56 * k,
+              height: 56 * k,
+              borderRadius: 14 * k,
               background: "linear-gradient(135deg, #6B5BFF 0%, #8B5CF6 50%, #E879F9 100%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 32,
+              fontSize: 32 * k,
               fontWeight: 700,
               color: "white",
               boxShadow: "0 8px 32px -8px rgba(107,91,255,0.6)",
@@ -48,21 +50,21 @@ export async function GET(request: NextRequest) {
           >
             K
           </div>
-          <span style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5 }}>
+          <span style={{ fontSize: 28 * k, fontWeight: 700, letterSpacing: -0.5 }}>
             KodStudio
           </span>
         </div>
 
         {/* Middle: title */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 * k }}>
           <h1
             style={{
-              fontSize: 76,
+              fontSize: 76 * k,
               fontWeight: 700,
               lineHeight: 1.05,
               letterSpacing: -1.5,
               margin: 0,
-              maxWidth: 1000,
+              maxWidth: 1000 * k,
               backgroundImage:
                 "linear-gradient(135deg, #6B5BFF 0%, #8B5CF6 50%, #E879F9 100%)",
               backgroundClip: "text",
@@ -73,10 +75,10 @@ export async function GET(request: NextRequest) {
           </h1>
           <p
             style={{
-              fontSize: 30,
+              fontSize: 30 * k,
               color: "#A1A1B5",
               margin: 0,
-              maxWidth: 900,
+              maxWidth: 900 * k,
               lineHeight: 1.4,
             }}
           >
@@ -91,10 +93,10 @@ export async function GET(request: NextRequest) {
             justifyContent: "space-between",
             alignItems: "center",
             color: "#6B6B7E",
-            fontSize: 22,
+            fontSize: 22 * k,
           }}
         >
-          <span>kodstudio.dev</span>
+          <span>kodstudio.ru</span>
           <span>Software Studio · 2026</span>
         </div>
       </div>
