@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 const STATS = [
   { value: "120+", label: "проектов" },
   { value: "5", label: "лет опыта" },
-  { value: "98%", label: "довольны" },
+  { value: "12+", label: "стеков" },
   { value: "24/7", label: "поддержка" },
 ] as const;
 
