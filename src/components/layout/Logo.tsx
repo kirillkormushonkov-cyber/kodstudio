@@ -17,7 +17,7 @@ export function Logo({ className, href = "/", showWordmark = true }: LogoProps) 
       href={href}
       aria-label="KodStudio — на главную"
       className={cn(
-        "group/logo flex items-center gap-2.5 outline-none [perspective:600px]",
+        "kod-logo-group group/logo flex items-center gap-2.5 outline-none [perspective:600px]",
         className,
       )}
     >
