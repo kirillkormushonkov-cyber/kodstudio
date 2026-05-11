@@ -14,6 +14,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { GradientText } from "@/components/ui/gradient-text";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { WordsReveal } from "@/components/system/WordsReveal";
 import { CTASection } from "@/components/sections/CTASection";
 import { ScrollReveal } from "@/components/system/ScrollReveal";
 import {
@@ -94,9 +95,13 @@ function ServiceHero({ service }: { service: Service }) {
             className="font-heading text-text-primary mt-6 font-bold leading-[1.05] tracking-tight"
             style={{ fontSize: "clamp(36px, 6vw, 72px)" }}
           >
-            <GradientText className="animate-gradient bg-[length:200%_200%]">
-              {service.title}
-            </GradientText>
+            <WordsReveal
+              text={service.title}
+              startDelay={0.15}
+              fromX={-420}
+              fromY={0}
+              wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"
+            />
           </h1>
 
           <p className="text-text-secondary mt-5 max-w-2xl text-base md:text-lg">

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+import { WordsReveal } from "@/components/system/WordsReveal";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -83,7 +84,7 @@ function CaseHero({ data }: { data: PortfolioCase }) {
           className="font-heading text-text-primary mt-5 font-bold leading-[1.05] tracking-tight"
           style={{ fontSize: "clamp(36px, 6vw, 72px)" }}
         >
-          {data.title}
+          <WordsReveal text={data.title} startDelay={0.15} fromX={-420} fromY={0} />
         </h1>
 
         <div

@@ -6,6 +6,7 @@ import { GradientText } from "@/components/ui/gradient-text";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CTASection } from "@/components/sections/CTASection";
 import { ScrollReveal } from "@/components/system/ScrollReveal";
+import { WordsReveal } from "@/components/system/WordsReveal";
 
 export const metadata: Metadata = {
   title: "О нас",
@@ -120,9 +121,13 @@ export default function AboutPage() {
               className="font-heading mt-4 font-bold leading-[1.05] tracking-tight"
               style={{ fontSize: "clamp(40px, 7vw, 72px)" }}
             >
-              <GradientText className="animate-gradient bg-[length:200%_200%]">
-                Команда, которая делает продукты
-              </GradientText>
+              <WordsReveal
+                text="Команда, которая делает продукты"
+                startDelay={0.15}
+                fromX={-420}
+                fromY={0}
+                wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"
+              />
             </h1>
             <p className="text-text-secondary mx-auto mt-5 max-w-2xl text-base md:text-lg">
               KodStudio — это 12 инженеров и дизайнеров, которые собрали

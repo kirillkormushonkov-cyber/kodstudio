@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { GradientText } from "@/components/ui/gradient-text";
 import { CTASection } from "@/components/sections/CTASection";
 import { ScrollReveal } from "@/components/system/ScrollReveal";
+import { WordsReveal } from "@/components/system/WordsReveal";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 
 export const metadata: Metadata = {
@@ -37,9 +38,13 @@ export default function BlogIndexPage() {
               className="font-heading mt-4 font-bold leading-[1.05] tracking-tight"
               style={{ fontSize: "clamp(40px, 7vw, 80px)" }}
             >
-              <GradientText className="animate-gradient bg-[length:200%_200%]">
-                Заметки команды
-              </GradientText>
+              <WordsReveal
+                text="Заметки команды"
+                startDelay={0.15}
+                fromX={-420}
+                fromY={0}
+                wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"
+              />
             </h1>
             <p className="text-text-secondary mx-auto mt-5 max-w-2xl text-base md:text-lg">
               Делимся своим опытом — от инженерных решений до продуктовых

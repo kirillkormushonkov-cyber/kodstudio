@@ -12,6 +12,7 @@ import {
 } from "@/components/layout/social-icons";
 import { WhatsAppQR } from "@/components/contacts/WhatsAppQR";
 import { ScrollReveal } from "@/components/system/ScrollReveal";
+import { WordsReveal } from "@/components/system/WordsReveal";
 
 const EMAIL = "hello@kodstudio.dev";
 const TELEGRAM_URL = "https://t.me/kodstudio";
@@ -51,9 +52,13 @@ export default function ContactsPage() {
               className="font-heading mt-4 font-bold leading-[1.05] tracking-tight"
               style={{ fontSize: "clamp(40px, 7vw, 72px)" }}
             >
-              <GradientText className="animate-gradient bg-[length:200%_200%]">
-                Поговорим о вашем проекте
-              </GradientText>
+              <WordsReveal
+                text="Поговорим о вашем проекте"
+                startDelay={0.15}
+                fromX={-420}
+                fromY={0}
+                wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"
+              />
             </h1>
             <p className="text-text-secondary mx-auto mt-5 max-w-2xl text-base md:text-lg">
               Заполните бриф или напишите напрямую — ответим в течение 24
