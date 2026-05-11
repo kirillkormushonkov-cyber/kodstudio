@@ -21,18 +21,18 @@ function shortestOffset(index: number, active: number, total: number): number {
 // Карусель «обнимает невидимый шар»: каждая карточка получает translateZ
 // (глубина) + rotateY (поворот в сторону центра) + translateX (разнос).
 const VISIBLE_NEIGHBORS = 2;
-const X_STEP_PERCENT = 80;
-const Z_STEP_PX = 200;
-const ROT_STEP_DEG = 40;
+const X_STEP_PERCENT = 78;
+const Z_STEP_PX = 180;
+const ROT_STEP_DEG = 45;
 const SCALE_STEP = 0.08;
 const ACTIVE_OPACITY = 1;
 const NEIGHBOR_OPACITY = 0.5;
 const FAR_OPACITY = 0.18;
 
-// Drag threshold: смещение или скорость свайпа, после которых считаем
+// Pan threshold: смещение или скорость свайпа, после которых считаем
 // переключение состоявшимся. На каждый жест — ровно один шаг.
-const DRAG_OFFSET_THRESHOLD = 80;
-const DRAG_VELOCITY_THRESHOLD = 400;
+const PAN_OFFSET_THRESHOLD = 60;
+const PAN_VELOCITY_THRESHOLD = 350;
 
 export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
   const [active, setActive] = React.useState(0);
@@ -66,17 +66,24 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
     return () => el.removeEventListener("keydown", onKey);
   }, [next, prev]);
 
-  // Drag / swipe — ровно на один соседний блок.
-  const onDragEnd = (
+  // Pan gesture — detect swipe без визуального drag (чтобы клик по
+  // активной карточке не ломался). Ровно на один соседний блок.
+  const triggeredRef = React.useRef(false);
+  const onPanStart = () => {
+    triggeredRef.current = false;
+  };
+  const onPanEnd = (
     _e: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo,
   ) => {
+    if (triggeredRef.current) return;
     const offset = info.offset.x;
     const velocity = info.velocity.x;
     const isSwipe =
-      Math.abs(offset) > DRAG_OFFSET_THRESHOLD ||
-      Math.abs(velocity) > DRAG_VELOCITY_THRESHOLD;
+      Math.abs(offset) > PAN_OFFSET_THRESHOLD ||
+      Math.abs(velocity) > PAN_VELOCITY_THRESHOLD;
     if (!isSwipe) return;
+    triggeredRef.current = true;
     if (offset < 0 || velocity < 0) next();
     else prev();
   };
@@ -98,16 +105,13 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
         aria-label="Кейсы"
         tabIndex={0}
         data-lenis-prevent
-        style={{ perspective: "1600px" }}
+        style={{ perspective: "1100px" }}
         className="relative mx-auto h-[460px] w-full overflow-hidden focus:outline-none md:h-[540px] lg:h-[580px]"
       >
         <motion.div
-          drag="x"
-          dragElastic={0.12}
-          dragMomentum={false}
-          dragSnapToOrigin
-          onDragEnd={onDragEnd}
-          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          onPanStart={onPanStart}
+          onPanEnd={onPanEnd}
+          className="absolute inset-0"
           style={{
             touchAction: "pan-y",
             transformStyle: "preserve-3d",
