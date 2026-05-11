@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, type PanInfo } from "framer-motion";
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { CaseCard } from "@/components/portfolio/CaseCard";
 import type { PortfolioCase } from "@/lib/portfolio";
@@ -208,42 +208,40 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
             );
           })}
 
-        {/* Mobile swipe affordance — мягко пульсирующие стрелки по бокам */}
-        {!reduce && (
-          <>
-            <motion.div
-              aria-hidden="true"
-              className="bg-bg-base/40 text-text-primary pointer-events-none absolute top-1/2 left-2 z-40 -translate-y-1/2 rounded-full p-1.5 backdrop-blur md:hidden"
-              initial={{ opacity: 0.5 }}
-              animate={{ x: [0, -4, 0], opacity: [0.5, 0.9, 0.5] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <ChevronLeft className="size-4" />
-            </motion.div>
-            <motion.div
-              aria-hidden="true"
-              className="bg-bg-base/40 text-text-primary pointer-events-none absolute top-1/2 right-2 z-40 -translate-y-1/2 rounded-full p-1.5 backdrop-blur md:hidden"
-              initial={{ opacity: 0.5 }}
-              animate={{ x: [0, 4, 0], opacity: [0.5, 0.9, 0.5] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <ChevronRight className="size-4" />
-            </motion.div>
-          </>
-        )}
-      </motion.div>
-
-      {/* Prev / Next + dots */}
-      <div className="mt-6 flex items-center justify-center gap-3">
-        <button
+        {/* Side controls — функциональные prev/next по центру высоты,
+            на мобилке с мягкой pulse-анимацией для подсказки про свайп */}
+        <motion.button
           type="button"
           onClick={prev}
           aria-label="Предыдущий кейс"
-          className="bg-bg-elevated/80 ring-border hover:bg-bg-overlay text-text-primary inline-flex size-10 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors"
+          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute top-1/2 left-2 z-40 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:left-4 md:size-11"
+          animate={reduce ? undefined : { x: [0, -4, 0] }}
+          transition={
+            reduce
+              ? undefined
+              : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
+          }
         >
-          <ArrowLeft className="size-4" />
-        </button>
+          <ChevronLeft className="size-5" />
+        </motion.button>
+        <motion.button
+          type="button"
+          onClick={next}
+          aria-label="Следующий кейс"
+          className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute top-1/2 right-2 z-40 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:right-4 md:size-11"
+          animate={reduce ? undefined : { x: [0, 4, 0] }}
+          transition={
+            reduce
+              ? undefined
+              : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
+          }
+        >
+          <ChevronRight className="size-5" />
+        </motion.button>
+      </motion.div>
 
+      {/* Dots + «Все кейсы» */}
+      <div className="mt-6 flex items-center justify-center gap-3">
         <div className="flex items-center gap-1.5" role="tablist">
           {cases.map((c, i) => (
             <button
@@ -262,15 +260,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
             />
           ))}
         </div>
-
-        <button
-          type="button"
-          onClick={next}
-          aria-label="Следующий кейс"
-          className="bg-bg-elevated/80 ring-border hover:bg-bg-overlay text-text-primary inline-flex size-10 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors"
-        >
-          <ArrowRight className="size-4" />
-        </button>
 
         <Link
           href="/portfolio"
