@@ -32,21 +32,28 @@ function WebsiteMock({ data }: { data: PortfolioCase }) {
   const tags = data.stack.slice(0, 3);
 
   return (
-    <div className="absolute inset-x-3 inset-y-3 flex flex-col overflow-hidden rounded-xl border border-white/20 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[2px] sm:inset-x-5 sm:inset-y-5">
-      {/* Browser chrome */}
-      <div className="flex items-center gap-1.5 border-b border-white/15 px-3 py-2">
-        <span className="size-2 rounded-full bg-red-400/80" />
-        <span className="size-2 rounded-full bg-yellow-300/80" />
-        <span className="size-2 rounded-full bg-emerald-400/80" />
-        <div className="ml-2 flex-1 truncate rounded-md bg-white/20 px-2 py-0.5 font-mono text-[10px] text-white/85">
+    <div className="absolute inset-x-3 inset-y-3 flex flex-col overflow-hidden rounded-xl bg-zinc-950 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.55),inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:inset-x-5 sm:inset-y-5">
+      {/* Browser title bar (macOS-like) */}
+      <div className="flex items-center gap-1.5 bg-zinc-900 px-3 py-2 border-b border-black/40">
+        <span className="size-2.5 rounded-full bg-red-500 shadow-[inset_0_-1px_0_rgba(0,0,0,0.25)]" />
+        <span className="size-2.5 rounded-full bg-yellow-400 shadow-[inset_0_-1px_0_rgba(0,0,0,0.25)]" />
+        <span className="size-2.5 rounded-full bg-emerald-500 shadow-[inset_0_-1px_0_rgba(0,0,0,0.25)]" />
+        <div className="ml-2 flex flex-1 items-center gap-1.5 truncate rounded-md bg-zinc-800/90 px-2 py-0.5 font-mono text-[10px] text-zinc-300 ring-1 ring-white/10">
+          <span className="size-1.5 rounded-full bg-emerald-400" />
           {domain}
         </div>
       </div>
-      {/* Body */}
-      <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
-        {/* Nav row */}
-        <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-wider text-white/70 sm:text-[10px]">
-          <span className="font-heading text-base font-bold tracking-tight text-white sm:text-lg">
+
+      {/* Page body — solid gradient like real screenshot */}
+      <div
+        className={cn(
+          "relative flex flex-1 flex-col bg-gradient-to-br p-3 sm:p-4",
+          data.hero,
+        )}
+      >
+        {/* Top nav */}
+        <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-wider text-white/80 sm:text-[10px]">
+          <span className="font-heading text-base font-bold tracking-tight text-white drop-shadow-sm sm:text-lg">
             {initials}
           </span>
           <div className="hidden gap-2 sm:flex">
@@ -54,13 +61,13 @@ function WebsiteMock({ data }: { data: PortfolioCase }) {
               <span key={n}>{n}</span>
             ))}
           </div>
-          <span className="rounded-md bg-white/25 px-1.5 py-0.5 text-white/95">
+          <span className="rounded-md bg-white px-1.5 py-0.5 text-[9px] font-semibold text-zinc-900 shadow-sm sm:text-[10px]">
             Связаться
           </span>
         </div>
 
         {/* Hero text */}
-        <div className="mt-1 space-y-0.5">
+        <div className="mt-2 space-y-0.5">
           <p className="font-heading line-clamp-2 text-[11px] font-bold leading-tight tracking-tight text-white drop-shadow-sm sm:text-sm">
             {data.title}
           </p>
@@ -71,12 +78,12 @@ function WebsiteMock({ data }: { data: PortfolioCase }) {
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center rounded-md border border-white/30 bg-white/15 px-1.5 py-0.5 font-mono text-[9px] text-white/90"
+              className="inline-flex items-center rounded-md bg-black/30 px-1.5 py-0.5 font-mono text-[9px] text-white shadow-sm ring-1 ring-white/20"
             >
               {tag}
             </span>
           ))}
-          <span className="ml-auto font-mono text-[9px] text-white/60">
+          <span className="ml-auto font-mono text-[9px] text-white/80">
             {data.year}
           </span>
         </div>
@@ -88,43 +95,62 @@ function WebsiteMock({ data }: { data: PortfolioCase }) {
 function BotMock({ data }: { data: PortfolioCase }) {
   const initials = getInitials(data.client || data.title);
   return (
-    <div className="absolute inset-x-3 inset-y-3 flex flex-col overflow-hidden rounded-xl border border-white/20 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[2px] sm:inset-x-5 sm:inset-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/15 px-3 py-2">
+    <div className="absolute inset-x-3 inset-y-3 flex flex-col overflow-hidden rounded-xl bg-zinc-950 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.55),inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:inset-x-5 sm:inset-y-5">
+      {/* Header — sky-blue like Telegram */}
+      <div className="flex items-center justify-between bg-gradient-to-b from-sky-700 to-sky-800 px-3 py-2 shadow-[inset_0_-1px_0_rgba(0,0,0,0.25)]">
         <div className="flex items-center gap-2">
-          <div className="grid size-6 place-items-center rounded-full bg-white/25">
-            <span className="text-[10px] font-bold text-white">{initials}</span>
+          <div
+            className={cn(
+              "grid size-7 place-items-center rounded-full bg-gradient-to-br shadow-sm",
+              data.hero,
+            )}
+          >
+            <span className="text-[10px] font-bold text-white drop-shadow-sm">
+              {initials}
+            </span>
           </div>
           <div className="leading-tight">
             <span className="block text-[11px] font-semibold text-white">
               {data.client}
             </span>
             <span className="block text-[9px] font-medium text-emerald-300">
-              ● online
+              ● в сети
             </span>
           </div>
         </div>
-        <span className="font-mono text-[9px] text-white/60">{data.year}</span>
+        <span className="font-mono text-[9px] text-white/70">{data.year}</span>
       </div>
-      {/* Chat */}
-      <div className="flex flex-1 flex-col justify-end gap-1.5 p-3 sm:p-4">
-        <div className="max-w-[80%] self-start rounded-xl rounded-bl-md bg-white/20 px-2.5 py-1 text-[10px] font-medium text-white/95">
+
+      {/* Chat area — dark wallpaper with subtle hero-gradient glow */}
+      <div className="relative flex flex-1 flex-col justify-end gap-1.5 bg-zinc-900 p-3 sm:p-4">
+        <div
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-15",
+            data.hero,
+          )}
+        />
+        <div className="relative max-w-[80%] self-start rounded-2xl rounded-bl-sm bg-zinc-700 px-2.5 py-1 text-[10px] font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
           Привет! Чем помочь?
         </div>
-        <div className="max-w-[70%] self-end rounded-xl rounded-br-md bg-white/35 px-2.5 py-1 text-[10px] font-medium text-white">
+        <div className="relative max-w-[70%] self-end rounded-2xl rounded-br-sm bg-sky-600 px-2.5 py-1 text-[10px] font-medium text-white shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
           Хочу узнать о вас
+          <span className="ml-1 font-mono text-[8px] text-sky-200">9:41</span>
         </div>
-        <div className="max-w-[85%] self-start rounded-xl rounded-bl-md bg-white/20 px-2.5 py-1 text-[10px] font-medium leading-snug text-white/95">
+        <div className="relative max-w-[85%] self-start rounded-2xl rounded-bl-sm bg-zinc-700 px-2.5 py-1 text-[10px] font-medium leading-snug text-white shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
           <span className="block">Мы команда {initials}.</span>
-          <span className="block opacity-80">Расскажу за минуту 👇</span>
+          <span className="block text-white/85">Расскажу за минуту 👇</span>
         </div>
       </div>
-      {/* Input */}
-      <div className="flex items-center gap-2 border-t border-white/15 px-3 py-1.5">
-        <div className="flex-1 rounded-full bg-white/15 px-2 py-1 font-mono text-[9px] text-white/55">
+
+      {/* Input bar — solid */}
+      <div className="flex items-center gap-2 bg-zinc-800 px-3 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <div className="flex-1 rounded-full bg-zinc-700 px-2.5 py-1 font-mono text-[9px] text-zinc-400">
           Написать сообщение…
         </div>
-        <span className="font-mono text-[9px] text-white/70">↵</span>
+        <span className="grid size-5 place-items-center rounded-full bg-sky-500 text-[10px] font-bold text-white shadow-sm">
+          ↑
+        </span>
       </div>
     </div>
   );
