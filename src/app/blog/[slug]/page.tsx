@@ -182,17 +182,23 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="grid gap-6 md:grid-cols-3">
               {related.map((p) => (
                 <article key={p.slug} className="group">
-                  <Link href={`/blog/${p.slug}`} className="block">
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className="border-brand-violet/10 hover:border-brand-violet/50 hover:shadow-brand bg-bg-elevated/30 hover:bg-bg-elevated/60 block rounded-2xl border p-3 transition-all duration-300 hover:-translate-y-1"
+                  >
                     <div className="border-brand-violet/15 relative aspect-video overflow-hidden rounded-xl border">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={getBlogOgUrl(p)}
+                        src={getBlogOgUrl(p, "thumb")}
                         alt={p.title}
                         loading="lazy"
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        decoding="async"
+                        width={600}
+                        height={315}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                       />
                     </div>
-                    <p className="text-text-muted mt-4 text-xs">
+                    <p className="text-text-muted mt-4 px-1 pb-2 text-xs">
                       {formatPostDate(p.date)} · {p.readingTime}
                     </p>
                     <h3 className="sr-only">{p.title}</h3>

@@ -30,7 +30,10 @@ export function formatPostDate(iso: string): string {
   return ruDateFormat.format(new Date(iso)).replace(" г.", "");
 }
 
-export function getBlogOgUrl(post: Pick<BlogPost, "title" | "description" | "tags" | "readingTime">): string {
+export function getBlogOgUrl(
+  post: Pick<BlogPost, "title" | "description" | "tags" | "readingTime">,
+  variant: "social" | "thumb" = "social",
+): string {
   const subtitleParts = [post.tags[0], post.readingTime].filter(Boolean);
   const subtitle = subtitleParts.length > 0
     ? subtitleParts.join(" · ")
@@ -39,5 +42,6 @@ export function getBlogOgUrl(post: Pick<BlogPost, "title" | "description" | "tag
     title: post.title,
     subtitle,
   });
+  if (variant === "thumb") params.set("size", "thumb");
   return `/og?${params.toString()}`;
 }

@@ -9,6 +9,9 @@ export async function GET(request: NextRequest) {
     searchParams.get("title")?.slice(0, 120) ?? "KodStudio — Software Studio";
   const subtitle =
     searchParams.get("subtitle")?.slice(0, 160) ?? "Сайты · Боты · Mobile";
+  const isThumb = searchParams.get("size") === "thumb";
+  const width = isThumb ? 600 : 1200;
+  const height = isThumb ? 315 : 630;
 
   return new ImageResponse(
     (
@@ -97,8 +100,8 @@ export async function GET(request: NextRequest) {
       </div>
     ),
     {
-      width: 1200,
-      height: 630,
+      width,
+      height,
       headers: {
         "Cache-Control":
           "public, max-age=31536000, s-maxage=31536000, immutable",

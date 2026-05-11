@@ -9,23 +9,27 @@ import { formatPostDate, getBlogOgUrl, getLatestPosts, type BlogPost } from "@/l
 function BlogCard({ post }: { post: BlogPost }) {
   return (
     <article className="group">
-      <Link href={`/blog/${post.slug}`} className="block outline-none">
-        {/* Cover */}
+      <Link
+        href={`/blog/${post.slug}`}
+        className="border-brand-violet/10 hover:border-brand-violet/50 hover:shadow-brand bg-bg-elevated/30 hover:bg-bg-elevated/60 block rounded-2xl border p-3 outline-none transition-all duration-300 hover:-translate-y-1"
+      >
         <div className="border-brand-violet/15 relative aspect-video overflow-hidden rounded-xl border">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={getBlogOgUrl(post)}
+            src={getBlogOgUrl(post, "thumb")}
             alt={post.title}
             loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            decoding="async"
+            width={600}
+            height={315}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         </div>
 
-        {/* Meta */}
-        <div className="mt-5">
+        <div className="mt-5 px-1 pb-2">
           <div className="text-text-muted flex items-center gap-3 text-xs">
             {post.tags[0] ? (
-              <span className="border-border/80 inline-flex items-center rounded-full border px-2 py-0.5">
+              <span className="border-border/80 group-hover:border-brand-violet/60 group-hover:text-brand-violet inline-flex items-center rounded-full border px-2 py-0.5 transition-colors">
                 {post.tags[0]}
               </span>
             ) : null}
