@@ -20,6 +20,13 @@ export type WordsRevealProps = {
    * градиентные классы вместо родителя.
    */
   wordClassName?: string;
+  /**
+   * Стартовый X-offset (px). Положительный — справа за экраном, отрицательный — слева.
+   * Дефолт 0 (только вертикальный slide-up).
+   */
+  fromX?: number;
+  /** Стартовый Y-offset (px). Положительный — снизу. */
+  fromY?: number;
 };
 
 /**
@@ -34,6 +41,8 @@ export function WordsReveal({
   duration = 0.9,
   className,
   wordClassName,
+  fromX = 0,
+  fromY = 14,
 }: WordsRevealProps) {
   const [mounted, setMounted] = React.useState(false);
   const reduceMotion = useReducedMotion();
@@ -83,8 +92,8 @@ export function WordsReveal({
                 ? `inline-block ${wordClassName}`
                 : "inline-block"
             }
-            initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, x: fromX, y: fromY, filter: "blur(6px)" }}
+            animate={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
             transition={{
               duration,
               delay,

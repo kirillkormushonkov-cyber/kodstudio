@@ -83,10 +83,20 @@ export function Hero() {
             style={{ fontSize: "clamp(40px, 7vw, 88px)" }}
           >
             <span className="block">
-              <WordsReveal text="Создаём цифровые" startDelay={0.15} />
+              <WordsReveal
+                text="Создаём цифровые"
+                startDelay={0.15}
+                fromX={-420}
+                fromY={0}
+              />
             </span>
             <span className="block">
-              <WordsReveal text="продукты, которые" startDelay={0.35} />
+              <WordsReveal
+                text="продукты, которые"
+                startDelay={0.35}
+                fromX={420}
+                fromY={0}
+              />
             </span>
             <span className="block">
               {/* Gradient теперь на каждом слове, не на родителе — иначе
@@ -94,6 +104,8 @@ export function Hero() {
               <WordsReveal
                 text="работают на бизнес"
                 startDelay={0.55}
+                fromX={-420}
+                fromY={0}
                 wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"
               />
               <span className="text-brand-magenta">.</span>
