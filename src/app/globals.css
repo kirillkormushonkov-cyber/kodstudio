@@ -232,26 +232,46 @@
   font-weight: 600;
 }
 
-/* ─── Brand logo breathing ──────────────────────────────────── */
-/* Subtle scale 1 ↔ 1.04 on the gradient square in the header. */
+/* ─── Brand logo animations ─────────────────────────────────── */
+/* Idle: subtle scale 1 ↔ 1.04 on the gradient square.
+   Hover: square does a 3D flip, each letter of "KodStudio" pops up
+   in sequence (wave). Pause breathing during hover so the flip
+   keyframe owns the transform alone. */
 
 @keyframes kod-logo-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
 }
 
 .kod-logo-breathe {
   animation: kod-logo-breathe 3s ease-in-out infinite;
 }
 
-/* Pause breathing while the logo is hovered so the hover-scale takes over. */
 .group\/logo:hover .kod-logo-breathe {
   animation: none;
+}
+
+@keyframes kod-logo-flip {
+  0%   { transform: rotateY(0deg)   scale(1); }
+  50%  { transform: rotateY(180deg) scale(1.08); }
+  100% { transform: rotateY(360deg) scale(1); }
+}
+
+.group\/logo:hover .kod-logo-flip {
+  animation: kod-logo-flip 0.9s ease-in-out 1;
+}
+
+@keyframes kod-letter-wave {
+  0%, 100% { transform: translateY(0); }
+  40%      { transform: translateY(-5px); }
+}
+
+.kod-letter-wave {
+  display: inline-block;
+}
+
+.group\/logo:hover .kod-letter-wave {
+  animation: kod-letter-wave 0.55s ease-in-out 1;
 }
 
 /* ─── Reduced motion ─────────────────────────────────────────── */
@@ -271,7 +291,9 @@
   .animate-float,
   .animate-gradient,
   .animate-glow-pulse,
-  .kod-logo-breathe {
+  .kod-logo-breathe,
+  .kod-logo-flip,
+  .kod-letter-wave {
     animation: none !important;
   }
 }
