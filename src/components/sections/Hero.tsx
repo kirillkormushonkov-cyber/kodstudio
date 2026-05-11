@@ -85,7 +85,7 @@ export function Hero() {
             <span className="block">
               <WordsReveal
                 text="Создаём цифровые"
-                startDelay={0.2}
+                startDelay={0.25}
                 fromX={-420}
                 fromY={0}
               />
@@ -93,7 +93,7 @@ export function Hero() {
             <span className="block">
               <WordsReveal
                 text="продукты, которые"
-                startDelay={0.55}
+                startDelay={0.75}
                 fromX={420}
                 fromY={0}
               />
@@ -103,7 +103,7 @@ export function Hero() {
                   inline-block motion-span теряет bg-clip-text. */}
               <WordsReveal
                 text="работают на бизнес"
-                startDelay={0.9}
+                startDelay={1.25}
                 fromX={-420}
                 fromY={0}
                 wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"

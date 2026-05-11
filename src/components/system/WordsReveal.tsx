@@ -37,8 +37,8 @@ export type WordsRevealProps = {
 export function WordsReveal({
   text,
   startDelay = 0,
-  perWordDelay = 0.14,
-  duration = 1.35,
+  perWordDelay = 0.18,
+  duration = 1.7,
   className,
   wordClassName,
   fromX = 0,
