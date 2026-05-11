@@ -7,7 +7,6 @@ import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { GradientText } from "@/components/ui/gradient-text";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { WordsReveal } from "@/components/system/WordsReveal";
 import { cn } from "@/lib/utils";
@@ -90,9 +89,13 @@ export function Hero() {
               <WordsReveal text="продукты, которые" startDelay={0.35} />
             </span>
             <span className="block">
-              <GradientText className="animate-gradient bg-[length:200%_200%]">
-                <WordsReveal text="работают на бизнес" startDelay={0.55} />
-              </GradientText>
+              {/* Gradient теперь на каждом слове, не на родителе — иначе
+                  inline-block motion-span теряет bg-clip-text. */}
+              <WordsReveal
+                text="работают на бизнес"
+                startDelay={0.55}
+                wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"
+              />
               <span className="text-brand-magenta">.</span>
             </span>
           </h1>

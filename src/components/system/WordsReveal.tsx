@@ -14,6 +14,12 @@ export type WordsRevealProps = {
   duration?: number;
   /** Класс внешнего span. */
   className?: string;
+  /**
+   * Класс для каждого motion-span слова. Нужен когда родитель применяет
+   * `bg-clip-text` — иначе inline-block слова теряют градиент. Передай сюда
+   * градиентные классы вместо родителя.
+   */
+  wordClassName?: string;
 };
 
 /**
@@ -27,6 +33,7 @@ export function WordsReveal({
   perWordDelay = 0.09,
   duration = 0.9,
   className,
+  wordClassName,
 }: WordsRevealProps) {
   const [mounted, setMounted] = React.useState(false);
   const reduceMotion = useReducedMotion();
@@ -36,6 +43,23 @@ export function WordsReveal({
   }, []);
 
   if (!mounted || reduceMotion) {
+    // SSR / before-mount fallback. Если есть wordClassName с градиентом,
+    // оборачиваем каждое слово, чтобы и без JS текст был видим с градиентом.
+    if (wordClassName) {
+      return (
+        <span className={className}>
+          {text.split(/(\s+)/).map((p, i) =>
+            /^\s+$/.test(p) ? (
+              <React.Fragment key={i}>{p}</React.Fragment>
+            ) : (
+              <span key={i} className={wordClassName}>
+                {p}
+              </span>
+            ),
+          )}
+        </span>
+      );
+    }
     return <span className={className}>{text}</span>;
   }
 
@@ -54,7 +78,11 @@ export function WordsReveal({
         return (
           <motion.span
             key={i}
-            className="inline-block"
+            className={
+              wordClassName
+                ? `inline-block ${wordClassName}`
+                : "inline-block"
+            }
             initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{
