@@ -19,10 +19,10 @@ const TELEGRAM_URL = "https://t.me/kodstudio";
 const TELEGRAM_HANDLE = "@kodstudio";
 const WHATSAPP_NUMBER = "+79601719785";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}`;
-const ADDRESS = "Москва, ул. Никольская, 10, офис 312";
+const ADDRESS = "Нижний Новгород";
 const HOURS = "Пн-Пт · 10:00 — 19:00 (МСК)";
 const MAP_SRC =
-  "https://yandex.ru/map-widget/v1/?z=15&ll=37.6234,55.7572";
+  "https://yandex.ru/map-widget/v1/?z=12&ll=43.9961,56.3269";
 
 export const metadata: Metadata = {
   title: "Контакты",
