@@ -252,34 +252,22 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
           lg cover ≈ 375/580 → center ≈ 32%.
           Using `top` (not inset-y + my-auto + aspect-ratio) so the
           position is unambiguous and not Tailwind-arbitrary-class-fragile. */}
-      <motion.button
+      <button
         type="button"
         onClick={prev}
         aria-label="Предыдущий кейс"
         className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute top-[21%] left-2 z-40 inline-flex size-10 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:top-[35%] md:left-4 md:size-11 lg:top-[32%]"
-        animate={reduce ? { x: 0 } : { x: [0, -4, 0] }}
-        transition={
-          reduce
-            ? undefined
-            : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
-        }
       >
         <ChevronLeft className="size-5" />
-      </motion.button>
-      <motion.button
+      </button>
+      <button
         type="button"
         onClick={next}
         aria-label="Следующий кейс"
         className="bg-bg-elevated/70 ring-border hover:bg-bg-overlay text-text-primary absolute top-[21%] right-2 z-40 inline-flex size-10 items-center justify-center rounded-full ring-1 backdrop-blur transition-colors md:top-[35%] md:right-4 md:size-11 lg:top-[32%]"
-        animate={reduce ? { x: 0 } : { x: [0, 4, 0] }}
-        transition={
-          reduce
-            ? undefined
-            : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
-        }
       >
         <ChevronRight className="size-5" />
-      </motion.button>
+      </button>
 
       {/* Dots + «Все кейсы» */}
       <div className="mt-6 flex items-center justify-center gap-3">
