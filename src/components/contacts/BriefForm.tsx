@@ -40,6 +40,7 @@ const schema = z.object({
   budget: z.string().min(1, "Выберите бюджет"),
   timeline: z.string().min(1, "Выберите сроки"),
   name: z.string().min(2, "Минимум 2 символа"),
+  phone: z.string().optional(),
   email: z.string().email("Введите корректный email"),
   telegram: z.string().optional(),
   description: z.string().min(10, "Минимум 10 символов"),
@@ -74,6 +75,7 @@ export function BriefForm() {
       budget: "",
       timeline: "",
       name: "",
+      phone: "",
       email: "",
       telegram: "",
       description: "",
@@ -234,6 +236,13 @@ export function BriefForm() {
                     error={errors.name?.message}
                     {...register("name")}
                     autoComplete="name"
+                  />
+                  <FieldText
+                    label="Телефон (необязательно)"
+                    type="tel"
+                    placeholder="+7 900 000 00 00"
+                    {...register("phone")}
+                    autoComplete="tel"
                   />
                   <FieldText
                     label="Email"
