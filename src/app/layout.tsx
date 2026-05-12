@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { BackgroundDecor } from "@/components/system/BackgroundDecor";
+import { MatrixRain } from "@/components/system/MatrixRain";
 import { CustomCursor } from "@/components/system/CustomCursor";
 import { LenisProvider } from "@/components/system/LenisProvider";
 import { PageTransition } from "@/components/system/PageTransition";
@@ -105,6 +106,7 @@ export default function RootLayout({
       <body className="bg-bg-base text-text-primary font-sans flex min-h-screen flex-col antialiased">
         <SkipToContent />
         <BackgroundDecor />
+        <MatrixRain />
         <LenisProvider>
           <CustomCursor />
           <Header />
