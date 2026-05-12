@@ -40,7 +40,7 @@ const schema = z.object({
   budget: z.string().min(1, "Выберите бюджет"),
   timeline: z.string().min(1, "Выберите сроки"),
   name: z.string().min(2, "Минимум 2 символа"),
-  phone: z.string().optional(),
+  phone: z.string().min(7, "Введите номер телефона"),
   email: z.string().email("Введите корректный email"),
   telegram: z.string().optional(),
   description: z.string().min(10, "Минимум 10 символов"),
@@ -52,7 +52,7 @@ const STEP_FIELDS: ReadonlyArray<readonly (keyof FormValues)[]> = [
   ["type"],
   ["budget"],
   ["timeline"],
-  ["name", "email", "description"],
+  ["name", "phone", "email", "description"],
 ] as const;
 
 const STEP_LABELS = ["Тип проекта", "Бюджет", "Сроки", "Контакты"];
@@ -238,9 +238,10 @@ export function BriefForm() {
                     autoComplete="name"
                   />
                   <FieldText
-                    label="Телефон (необязательно)"
+                    label="Телефон"
                     type="tel"
                     placeholder="+7 900 000 00 00"
+                    error={errors.phone?.message}
                     {...register("phone")}
                     autoComplete="tel"
                   />
