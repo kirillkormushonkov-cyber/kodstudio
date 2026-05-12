@@ -8,6 +8,7 @@ const schema = z.object({
   name: z.string().trim().min(2, "Минимум 2 символа").max(100),
   position: z.string().trim().max(100).optional().or(z.literal("")),
   company: z.string().trim().max(100).optional().or(z.literal("")),
+  phone: z.string().trim().max(20).optional().or(z.literal("")),
   rating: z.number().int().min(1).max(5),
   text: z.string().trim().min(30, "Минимум 30 символов").max(2000),
   email: z.string().email("Введите корректный email"),

@@ -35,6 +35,7 @@ const schema = z.object({
   name: z.string().trim().min(2, "Минимум 2 символа").max(100),
   position: z.string().trim().max(100).optional(),
   company: z.string().trim().max(100).optional(),
+  phone: z.string().trim().max(20).optional(),
   rating: z.number().int().min(1, "Поставьте оценку").max(5),
   text: z.string().trim().min(30, "Минимум 30 символов").max(2000),
   email: z.string().email("Введите корректный email"),
@@ -66,6 +67,7 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
       name: "",
       position: "",
       company: "",
+      phone: "",
       rating: 0,
       text: "",
       email: "",
@@ -183,7 +185,7 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
         для связи.
       </p>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <div>
           <label className={LABEL}>Имя*</label>
           <input
@@ -214,11 +216,21 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
           )}
         </div>
         <div>
+          <label className={LABEL}>Телефон</label>
+          <input
+            {...register("phone")}
+            type="tel"
+            className={cn(FIELD_BASE, "mt-2 h-11")}
+            placeholder="+7 900 000 00 00"
+            autoComplete="tel"
+          />
+        </div>
+        <div>
           <label className={LABEL}>Должность / роль</label>
           <input
             {...register("position")}
             className={cn(FIELD_BASE, "mt-2 h-11")}
-            placeholder="Менеджер, фрилансер, предприниматель..."
+            placeholder="Менеджер, фрилансер..."
             autoComplete="organization-title"
           />
         </div>
@@ -227,7 +239,7 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
           <input
             {...register("company")}
             className={cn(FIELD_BASE, "mt-2 h-11")}
-            placeholder="Название компании или проекта"
+            placeholder="Название компании"
             autoComplete="organization"
           />
         </div>
@@ -303,9 +315,9 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
         </label>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center justify-end gap-4">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
         {siteKey ? (
-          <div ref={captchaRef} className="flex-1 flex justify-start min-w-[260px]" />
+          <div ref={captchaRef} className="mx-auto" />
         ) : (
           <p className="text-text-muted text-xs flex-1">
             Капча не настроена (нет <code>NEXT_PUBLIC_TURNSTILE_SITE_KEY</code>) —
