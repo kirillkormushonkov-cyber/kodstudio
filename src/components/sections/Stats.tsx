@@ -53,11 +53,11 @@ function StatItem({ value, suffix, label }: Stat) {
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center gap-3 py-10 md:px-4 md:py-2"
+      className="flex flex-col items-center gap-3 py-6 md:px-4 md:py-2"
     >
       <GradientText
         className="font-heading block font-semibold leading-none"
-        style={{ fontSize: "clamp(56px, 8vw, 96px)" }}
+        style={{ fontSize: "clamp(40px, 6vw, 96px)" }}
       >
         {display}
         {suffix ?? ""}
@@ -73,7 +73,7 @@ export function Stats() {
   return (
     <section className="py-20 md:py-28">
       <Container>
-        <div className="grid grid-cols-1 divide-y divide-white/10 md:grid-cols-4 md:divide-x md:divide-y-0">
+        <div className="grid grid-cols-2 divide-x divide-y divide-white/10 md:grid-cols-4 md:divide-y-0">
           {STATS.map((s) => (
             <StatItem key={s.label} {...s} />
           ))}
