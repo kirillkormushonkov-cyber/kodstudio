@@ -41,7 +41,7 @@ const COMPANY = [
 
 const EMAIL = "hello@kodstudio.dev";
 const TELEGRAM = "https://t.me/kodstudio";
-const WHATSAPP = "https://wa.me/79999999999";
+const WHATSAPP = "https://wa.me/79601719785";
 
 export function Footer() {
   return (
