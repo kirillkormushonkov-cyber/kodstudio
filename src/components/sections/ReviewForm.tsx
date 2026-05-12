@@ -233,7 +233,20 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
         </div>
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-[auto_1fr] lg:items-start">
+      <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-start">
+        <div>
+          <label className={LABEL}>Отзыв*</label>
+          <textarea
+            {...register("text")}
+            rows={4}
+            className={cn(FIELD_BASE, "mt-2 resize-none py-3")}
+            placeholder="Расскажите про опыт работы — что понравилось, что получилось"
+          />
+          {errors.text && (
+            <p className="mt-1 text-xs text-red-400">{errors.text.message}</p>
+          )}
+        </div>
+
         <div>
           <label className={LABEL}>Оценка*</label>
           <Controller
@@ -270,19 +283,6 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
           />
           {errors.rating && (
             <p className="mt-1 text-xs text-red-400">{errors.rating.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label className={LABEL}>Отзыв*</label>
-          <textarea
-            {...register("text")}
-            rows={4}
-            className={cn(FIELD_BASE, "mt-2 resize-none py-3")}
-            placeholder="Расскажите про опыт работы — что понравилось, что получилось"
-          />
-          {errors.text && (
-            <p className="mt-1 text-xs text-red-400">{errors.text.message}</p>
           )}
         </div>
       </div>
