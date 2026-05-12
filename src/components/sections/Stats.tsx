@@ -16,7 +16,7 @@ const STATS: Stat[] = [
   { value: 120, suffix: "+", label: "проектов" },
   { value: 5, label: "лет на рынке" },
   { value: 47, label: "клиентов" },
-  { value: 98, suffix: "%", label: "повторных" },
+  { value: 98, suffix: "%", label: "повторных клиентов" },
 ];
 
 function useCounter(target: number, duration: number, start: boolean) {
