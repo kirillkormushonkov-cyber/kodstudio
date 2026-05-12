@@ -199,7 +199,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                   rotateY: rotY,
                   scale,
                   opacity,
-                  filter: isActive ? "blur(0px)" : `blur(${absOffset * 2}px)`,
                 }}
                 whileHover={
                   isActive || reduce
@@ -207,7 +206,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                     : {
                         scale: scale * 1.04,
                         opacity: 1,
-                        filter: "blur(0px)",
                       }
                 }
                 transition={
@@ -217,8 +215,8 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                 }
                 style={{
                   zIndex,
-                  transformStyle: "preserve-3d",
                   transformOrigin: "center center",
+                  willChange: "transform, opacity",
                 }}
                 className="absolute inset-x-0 top-0 mx-auto h-full w-[min(86%,600px)]"
                 data-card-index={i}

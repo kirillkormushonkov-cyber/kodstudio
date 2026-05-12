@@ -39,24 +39,6 @@ export function CaseCard({ data }: { data: PortfolioCase }) {
                     "radial-gradient(circle at 25% 15%, rgba(255,255,255,0.55), transparent 55%), radial-gradient(circle at 80% 85%, rgba(0,0,0,0.35), transparent 50%)",
                 }}
               />
-              <svg
-                aria-hidden="true"
-                className="absolute inset-0 h-full w-full opacity-[0.06] mix-blend-overlay"
-              >
-                <filter id={`card-noise-${data.slug}`}>
-                  <feTurbulence
-                    type="fractalNoise"
-                    baseFrequency="0.9"
-                    numOctaves="2"
-                    stitchTiles="stitch"
-                  />
-                </filter>
-                <rect
-                  width="100%"
-                  height="100%"
-                  filter={`url(#card-noise-${data.slug})`}
-                />
-              </svg>
               <CaseCover data={data} />
             </>
           )}
