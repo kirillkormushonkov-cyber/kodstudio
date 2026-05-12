@@ -204,7 +204,7 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
             {...register("email")}
             type="email"
             className={cn(FIELD_BASE, "mt-2 h-11")}
-            placeholder="you@company.com"
+            placeholder="ivan@mail.ru"
             autoComplete="email"
           />
           {errors.email && (
@@ -214,20 +214,20 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
           )}
         </div>
         <div>
-          <label className={LABEL}>Должность</label>
+          <label className={LABEL}>Должность / роль</label>
           <input
             {...register("position")}
             className={cn(FIELD_BASE, "mt-2 h-11")}
-            placeholder="CEO"
+            placeholder="Менеджер, фрилансер, предприниматель..."
             autoComplete="organization-title"
           />
         </div>
         <div>
-          <label className={LABEL}>Компания</label>
+          <label className={LABEL}>Компания / проект</label>
           <input
             {...register("company")}
             className={cn(FIELD_BASE, "mt-2 h-11")}
-            placeholder="Acme"
+            placeholder="Название компании или проекта"
             autoComplete="organization"
           />
         </div>
