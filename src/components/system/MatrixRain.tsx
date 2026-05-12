@@ -11,7 +11,7 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   if (!ctx) return () => {};
 
   const resize = () => {
-    const stripW = Math.floor(window.innerWidth * 0.14);
+    const stripW = Math.floor(window.innerWidth * 0.28);
     canvas.width = stripW;
     canvas.height = window.innerHeight;
   };
@@ -72,7 +72,7 @@ export function MatrixRain() {
   const base: React.CSSProperties = {
     position: "fixed",
     top: 0,
-    width: "14vw",
+    width: "28vw",
     height: "100vh",
     zIndex: -1,
     pointerEvents: "none",
