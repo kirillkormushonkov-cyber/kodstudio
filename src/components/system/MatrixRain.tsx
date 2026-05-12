@@ -10,18 +10,15 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   const ctx = canvas.getContext("2d");
   if (!ctx) return () => {};
 
-  const stripW = Math.floor(window.innerWidth * 0.13);
-  canvas.width = stripW;
-  canvas.height = window.innerHeight;
-  canvas.style.position = "fixed";
-  canvas.style.top = "0";
-  canvas.style.zIndex = "1";
-  canvas.style.pointerEvents = "none";
-  if (side === "left") canvas.style.left = "0";
-  else canvas.style.right = "0";
+  const resize = () => {
+    const stripW = Math.floor(window.innerWidth * 0.12);
+    canvas.width = stripW;
+    canvas.height = window.innerHeight;
+  };
+  resize();
 
-  const cols = Math.max(1, Math.floor(stripW / FONT_SIZE));
-  const drops = Array.from({ length: cols }, () =>
+  const cols = () => Math.max(1, Math.floor(canvas.width / FONT_SIZE));
+  let drops = Array.from({ length: cols() }, () =>
     Math.floor(Math.random() * -60),
   );
 
@@ -35,12 +32,9 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
       const x = i * FONT_SIZE;
       const y = drops[i] * FONT_SIZE;
 
-      // bright head
-      ctx.fillStyle = "rgba(167, 139, 250, 0.55)";
+      ctx.fillStyle = "rgba(167, 139, 250, 0.6)";
       ctx.fillText(char, x, y);
-
-      // dim trail
-      ctx.fillStyle = "rgba(109, 40, 217, 0.25)";
+      ctx.fillStyle = "rgba(109, 40, 217, 0.3)";
       const prev = CHARS[Math.floor(Math.random() * CHARS.length)];
       ctx.fillText(prev, x, y - FONT_SIZE);
 
@@ -49,15 +43,15 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
     }
   };
 
-  const interval = setInterval(draw, 1000 / FPS);
-
   const onResize = () => {
-    const newW = Math.floor(window.innerWidth * 0.13);
-    canvas.width = newW;
-    canvas.height = window.innerHeight;
+    resize();
+    drops = Array.from({ length: cols() }, () =>
+      Math.floor(Math.random() * -60),
+    );
   };
   window.addEventListener("resize", onResize);
 
+  const interval = setInterval(draw, 1000 / FPS);
   return () => {
     clearInterval(interval);
     window.removeEventListener("resize", onResize);
@@ -75,10 +69,38 @@ export function MatrixRain() {
     return () => { c1?.(); c2?.(); };
   }, []);
 
+  const base: React.CSSProperties = {
+    position: "fixed",
+    top: 0,
+    width: "12vw",
+    height: "100vh",
+    zIndex: 0,
+    pointerEvents: "none",
+    opacity: 0.4,
+  };
+
   return (
     <>
-      <canvas ref={leftRef} aria-hidden="true" style={{ opacity: 0.35 }} />
-      <canvas ref={rightRef} aria-hidden="true" style={{ opacity: 0.35 }} />
+      <canvas
+        ref={leftRef}
+        aria-hidden="true"
+        style={{
+          ...base,
+          left: 0,
+          maskImage: "linear-gradient(to right, black 30%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, black 30%, transparent 100%)",
+        }}
+      />
+      <canvas
+        ref={rightRef}
+        aria-hidden="true"
+        style={{
+          ...base,
+          right: 0,
+          maskImage: "linear-gradient(to left, black 30%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to left, black 30%, transparent 100%)",
+        }}
+      />
     </>
   );
 }
