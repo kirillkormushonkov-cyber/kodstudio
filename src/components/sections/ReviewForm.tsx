@@ -173,7 +173,7 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      className="border-brand-violet/15 bg-bg-elevated/60 relative mx-auto max-w-2xl rounded-3xl border p-6 backdrop-blur md:p-8"
+      className="border-brand-violet/15 bg-bg-elevated/60 relative mx-auto max-w-4xl rounded-3xl border p-6 backdrop-blur md:p-8"
     >
       <h3 className="font-heading text-xl font-semibold tracking-tight md:text-2xl">
         Оставить свой отзыв
@@ -183,7 +183,7 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
         для связи.
       </p>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <label className={LABEL}>Имя*</label>
           <input
@@ -233,56 +233,58 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
         </div>
       </div>
 
-      <div className="mt-5">
-        <label className={LABEL}>Оценка*</label>
-        <Controller
-          control={control}
-          name="rating"
-          render={({ field }) => (
-            <div
-              className="mt-2 flex gap-1"
-              role="radiogroup"
-              aria-label="Оценка"
-            >
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button
-                  key={n}
-                  type="button"
-                  role="radio"
-                  aria-checked={field.value === n}
-                  aria-label={`Оценка ${n} из 5`}
-                  onClick={() => field.onChange(n)}
-                  className="rounded p-1 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-violet/50"
-                >
-                  <Star
-                    className={cn(
-                      "size-7",
-                      n <= field.value
-                        ? "fill-brand-pink text-brand-pink"
-                        : "text-border",
-                    )}
-                  />
-                </button>
-              ))}
-            </div>
+      <div className="mt-5 grid gap-4 lg:grid-cols-[auto_1fr] lg:items-start">
+        <div>
+          <label className={LABEL}>Оценка*</label>
+          <Controller
+            control={control}
+            name="rating"
+            render={({ field }) => (
+              <div
+                className="mt-2 flex gap-1"
+                role="radiogroup"
+                aria-label="Оценка"
+              >
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    role="radio"
+                    aria-checked={field.value === n}
+                    aria-label={`Оценка ${n} из 5`}
+                    onClick={() => field.onChange(n)}
+                    className="rounded p-1 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-violet/50"
+                  >
+                    <Star
+                      className={cn(
+                        "size-7",
+                        n <= field.value
+                          ? "fill-brand-pink text-brand-pink"
+                          : "text-border",
+                      )}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          />
+          {errors.rating && (
+            <p className="mt-1 text-xs text-red-400">{errors.rating.message}</p>
           )}
-        />
-        {errors.rating && (
-          <p className="mt-1 text-xs text-red-400">{errors.rating.message}</p>
-        )}
-      </div>
+        </div>
 
-      <div className="mt-5">
-        <label className={LABEL}>Отзыв*</label>
-        <textarea
-          {...register("text")}
-          rows={5}
-          className={cn(FIELD_BASE, "mt-2 resize-none py-3")}
-          placeholder="Расскажите про опыт работы — что понравилось, что получилось"
-        />
-        {errors.text && (
-          <p className="mt-1 text-xs text-red-400">{errors.text.message}</p>
-        )}
+        <div>
+          <label className={LABEL}>Отзыв*</label>
+          <textarea
+            {...register("text")}
+            rows={4}
+            className={cn(FIELD_BASE, "mt-2 resize-none py-3")}
+            placeholder="Расскажите про опыт работы — что понравилось, что получилось"
+          />
+          {errors.text && (
+            <p className="mt-1 text-xs text-red-400">{errors.text.message}</p>
+          )}
+        </div>
       </div>
 
       {/* Honeypot — invisible to humans, irresistible to bots. */}
