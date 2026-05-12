@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
 
           <h1 className="font-heading text-text-primary mt-5 max-w-4xl text-3xl font-bold leading-[1.1] tracking-tight md:text-5xl">
-            <WordsReveal text={post.title} startDelay={0.15} fromX={-420} fromY={0} />
+            <WordsReveal text={post.title} startDelay={0.15} fromX={0} fromY={8} />
           </h1>
 
           <p className="text-text-secondary mt-4 max-w-2xl text-lg leading-relaxed">

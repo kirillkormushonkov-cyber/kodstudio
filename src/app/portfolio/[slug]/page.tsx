@@ -84,7 +84,7 @@ function CaseHero({ data }: { data: PortfolioCase }) {
           className="font-heading text-text-primary mt-5 font-bold leading-[1.05] tracking-tight"
           style={{ fontSize: "clamp(36px, 6vw, 72px)" }}
         >
-          <WordsReveal text={data.title} startDelay={0.15} fromX={-420} fromY={0} />
+          <WordsReveal text={data.title} startDelay={0.15} fromX={0} fromY={8} />
         </h1>
 
         <div

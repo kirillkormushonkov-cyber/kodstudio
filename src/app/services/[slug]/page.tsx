@@ -98,8 +98,8 @@ function ServiceHero({ service }: { service: Service }) {
             <WordsReveal
               text={service.title}
               startDelay={0.15}
-              fromX={-420}
-              fromY={0}
+              fromX={0}
+              fromY={8}
               wordClassName="bg-gradient-brand bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]"
             />
           </h1>
