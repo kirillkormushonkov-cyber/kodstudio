@@ -11,7 +11,7 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   if (!ctx) return () => {};
 
   const resize = () => {
-    const stripW = Math.floor(window.innerWidth * 0.12);
+    const stripW = Math.floor(window.innerWidth * 0.07);
     canvas.width = stripW;
     canvas.height = window.innerHeight;
   };
@@ -72,7 +72,7 @@ export function MatrixRain() {
   const base: React.CSSProperties = {
     position: "fixed",
     top: 0,
-    width: "12vw",
+    width: "7vw",
     height: "100vh",
     zIndex: 0,
     pointerEvents: "none",
@@ -87,8 +87,8 @@ export function MatrixRain() {
         style={{
           ...base,
           left: 0,
-          maskImage: "linear-gradient(to right, black 30%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to right, black 30%, transparent 100%)",
+          maskImage: "linear-gradient(to right, black 0%, transparent 80%)",
+          WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 80%)",
         }}
       />
       <canvas
@@ -97,8 +97,8 @@ export function MatrixRain() {
         style={{
           ...base,
           right: 0,
-          maskImage: "linear-gradient(to left, black 30%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to left, black 30%, transparent 100%)",
+          maskImage: "linear-gradient(to left, black 0%, transparent 80%)",
+          WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 80%)",
         }}
       />
     </>
