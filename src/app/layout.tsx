@@ -107,7 +107,6 @@ export default function RootLayout({
         <SkipToContent />
         <BackgroundDecor />
         <MatrixRain />
-        <div className="relative z-10 flex flex-1 flex-col">
         <LenisProvider>
           <CustomCursor />
           <Header />
@@ -120,7 +119,6 @@ export default function RootLayout({
           </div>
           <Footer />
         </LenisProvider>
-        </div>
         <Toaster richColors position="top-right" theme="dark" />
       </body>
     </html>
