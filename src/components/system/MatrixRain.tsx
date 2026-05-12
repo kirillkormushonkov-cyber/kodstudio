@@ -11,14 +11,14 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   if (!ctx) return () => {};
 
   const resize = () => {
-    const margin = Math.floor((window.innerWidth - 1344) / 2);
-    const stripW = Math.max(0, Math.min(margin, 180));
+    const margin = Math.floor((window.innerWidth - 1280) / 2);
+    // Always show at least 80px, capped at margin+20 on large screens
+    const stripW = margin > 0 ? Math.min(margin + 20, 200) : 80;
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
     canvas.style.height = `${window.innerHeight}px`;
-    canvas.style.display = stripW < 40 ? "none" : "block";
-    canvas.style.opacity = "0.4";
+    canvas.style.display = "block";
   };
   resize();
 
