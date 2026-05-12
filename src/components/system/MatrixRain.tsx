@@ -18,6 +18,7 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
     canvas.style.width = `${stripW}px`;
     canvas.style.height = `${window.innerHeight}px`;
     canvas.style.display = stripW < 40 ? "none" : "block";
+    canvas.style.opacity = "0.4";
   };
   resize();
 
@@ -77,10 +78,11 @@ export function MatrixRain() {
     position: "fixed",
     top: 0,
     width: 0,
-    height: "100vh",
+    height: 0,
     zIndex: -1,
     pointerEvents: "none",
     opacity: 0.4,
+    display: "none",
   };
 
   return (
