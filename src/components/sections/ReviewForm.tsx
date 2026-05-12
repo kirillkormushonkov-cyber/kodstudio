@@ -303,18 +303,15 @@ export function ReviewForm({ siteKey }: { siteKey?: string }) {
         </label>
       </div>
 
-      {siteKey ? (
-        <div className="mt-6 flex justify-center">
-          <div ref={captchaRef} />
-        </div>
-      ) : (
-        <p className="text-text-muted mt-6 text-center text-xs">
-          Капча не настроена (нет <code>NEXT_PUBLIC_TURNSTILE_SITE_KEY</code>) —
-          отзывы принимаются без неё. Не для прода.
-        </p>
-      )}
-
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex flex-wrap items-center justify-end gap-4">
+        {siteKey ? (
+          <div ref={captchaRef} className="flex-1 flex justify-start min-w-[260px]" />
+        ) : (
+          <p className="text-text-muted text-xs flex-1">
+            Капча не настроена (нет <code>NEXT_PUBLIC_TURNSTILE_SITE_KEY</code>) —
+            отзывы принимаются без неё. Не для прода.
+          </p>
+        )}
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Отправляем…" : "Отправить отзыв"}
         </Button>
