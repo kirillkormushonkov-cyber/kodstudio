@@ -11,13 +11,12 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   if (!ctx) return () => {};
 
   const resize = () => {
-    const stripW = Math.min(
-      Math.floor(window.innerWidth * 0.28),
-      Math.floor((window.innerWidth - 1280) / 2) + 60,
-      240,
-    );
+    // Only render in the real page margins (outside max-w-7xl = 1280px + 2×32px padding)
+    const margin = Math.floor((window.innerWidth - 1344) / 2);
+    const stripW = Math.max(0, Math.min(margin, 180));
     canvas.width = stripW;
     canvas.height = window.innerHeight;
+    canvas.style.display = stripW < 40 ? "none" : "block";
   };
   resize();
 
@@ -76,7 +75,7 @@ export function MatrixRain() {
   const base: React.CSSProperties = {
     position: "fixed",
     top: 0,
-    width: "min(28vw, 240px)",
+    width: "auto",
     height: "100vh",
     zIndex: -1,
     pointerEvents: "none",
