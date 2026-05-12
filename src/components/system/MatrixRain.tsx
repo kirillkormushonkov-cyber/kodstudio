@@ -13,7 +13,7 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   const resize = () => {
     const margin = Math.floor((window.innerWidth - 1280) / 2);
     // Always show at least 80px, capped at margin+20 on large screens
-    const stripW = margin > 0 ? Math.min(margin + 20, 200) : 80;
+    const stripW = margin > 0 ? Math.min(margin + 40, 320) : 120;
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
