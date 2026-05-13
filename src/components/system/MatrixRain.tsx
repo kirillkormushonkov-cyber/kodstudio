@@ -13,7 +13,7 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   const resize = () => {
     // Minimum 260px on any screen; grows with viewport margin on wide screens
     const margin = Math.floor((window.innerWidth - 1280) / 2);
-    const stripW = Math.max(260, Math.min(margin + 220, 520));
+    const stripW = Math.max(260, Math.min(margin + 340, 680));
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
