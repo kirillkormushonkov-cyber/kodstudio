@@ -5,32 +5,24 @@ import * as React from "react";
 const CHARS = "01{}[]()<>=+-*/&#@!?\\|^~$;:.";
 const FONT_SIZE = 13;
 const FPS = 18;
-// Width of the centered content container (max-w-7xl)
-const CONTENT_W = 1280;
 
 function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   const ctx = canvas.getContext("2d");
   if (!ctx) return () => {};
 
   const resize = () => {
-    const vw = window.innerWidth;
-    // margin = space between viewport edge and content container
-    const margin = Math.floor((vw - CONTENT_W) / 2);
-    // On narrow viewports show a small edge strip; on wide ones use the full margin
-    const stripW = margin > 40
-      ? Math.min(margin + 200, 500)
-      : 60;
+    // Fixed strip width capped at half viewport so strips never overlap each other
+    const stripW = Math.min(260, Math.floor(window.innerWidth / 2));
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
     canvas.style.height = `${window.innerHeight}px`;
     canvas.style.display = "block";
 
-    // Fade toward the content edge
     const grad =
       side === "left"
-        ? "linear-gradient(to right, black 0%, transparent 100%)"
-        : "linear-gradient(to left, black 0%, transparent 100%)";
+        ? "linear-gradient(to right, black 0%, transparent 80%)"
+        : "linear-gradient(to left, black 0%, transparent 80%)";
     canvas.style.maskImage = grad;
     (canvas.style as CSSStyleDeclaration & { webkitMaskImage: string }).webkitMaskImage = grad;
   };
@@ -95,7 +87,7 @@ export function MatrixRain() {
     height: 0,
     zIndex: -1,
     pointerEvents: "none",
-    opacity: 0.6,
+    opacity: 0.5,
     display: "none",
   };
 
