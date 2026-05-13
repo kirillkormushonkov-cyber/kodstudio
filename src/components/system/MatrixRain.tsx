@@ -5,20 +5,38 @@ import * as React from "react";
 const CHARS = "01{}[]()<>=+-*/&#@!?\\|^~$;:.";
 const FONT_SIZE = 13;
 const FPS = 18;
+// max-w-7xl = 1280px; px-8 = 32px padding on each side
+const CONTENT_MAX_W = 1280;
+const CONTAINER_PAD = 32;
 
 function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   const ctx = canvas.getContext("2d");
   if (!ctx) return () => {};
 
   const resize = () => {
-    const margin = Math.floor((window.innerWidth - 1280) / 2);
-    // Always show at least 80px, capped at margin+20 on large screens
-    const stripW = margin > 0 ? Math.min(margin + 200, 600) : 220;
+    const margin = Math.floor((window.innerWidth - CONTENT_MAX_W) / 2);
+    // Hide when there is no margin space outside the content container
+    if (margin < 40) {
+      canvas.style.display = "none";
+      return;
+    }
+    // Canvas width = margin area + extra buffer for a smooth fade tail
+    const stripW = Math.min(margin + 120, 600);
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
     canvas.style.height = `${window.innerHeight}px`;
     canvas.style.display = "block";
+
+    // Fade to transparent before the content text begins (margin + container padding)
+    const contentEdge = margin + CONTAINER_PAD;
+    const fadePct = Math.round(Math.min((contentEdge / stripW) * 100, 90));
+    const grad =
+      side === "left"
+        ? `linear-gradient(to right, black 0%, transparent ${fadePct}%)`
+        : `linear-gradient(to left, black 0%, transparent ${fadePct}%)`;
+    canvas.style.maskImage = grad;
+    (canvas.style as CSSStyleDeclaration & { webkitMaskImage: string }).webkitMaskImage = grad;
   };
   resize();
 
@@ -81,32 +99,14 @@ export function MatrixRain() {
     height: 0,
     zIndex: -1,
     pointerEvents: "none",
-    opacity: 0.4,
+    opacity: 0.55,
     display: "none",
   };
 
   return (
     <>
-      <canvas
-        ref={leftRef}
-        aria-hidden="true"
-        style={{
-          ...base,
-          left: 0,
-          maskImage: "linear-gradient(to right, black 0%, transparent 80%)",
-          WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 80%)",
-        }}
-      />
-      <canvas
-        ref={rightRef}
-        aria-hidden="true"
-        style={{
-          ...base,
-          right: 0,
-          maskImage: "linear-gradient(to left, black 0%, transparent 80%)",
-          WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 80%)",
-        }}
-      />
+      <canvas ref={leftRef} aria-hidden="true" style={{ ...base, left: 0 }} />
+      <canvas ref={rightRef} aria-hidden="true" style={{ ...base, right: 0 }} />
     </>
   );
 }
