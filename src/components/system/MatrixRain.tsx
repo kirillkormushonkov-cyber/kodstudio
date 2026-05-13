@@ -11,8 +11,7 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   if (!ctx) return () => {};
 
   const resize = () => {
-    // Fixed strip width capped at half viewport so strips never overlap each other
-    const stripW = Math.min(260, Math.floor(window.innerWidth / 2));
+    const stripW = 260;
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
