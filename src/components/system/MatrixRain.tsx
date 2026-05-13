@@ -15,22 +15,30 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
 
   const resize = () => {
     const margin = Math.floor((window.innerWidth - CONTENT_MAX_W) / 2);
-    // Hide when there is no margin space outside the content container
-    if (margin < 40) {
+
+    let stripW: number;
+    let fadePct: number;
+
+    if (margin >= 40) {
+      // Wide screen: use full margin + buffer, clip at content edge
+      stripW = Math.min(margin + 120, 600);
+      const contentEdge = margin + CONTAINER_PAD;
+      fadePct = Math.round(Math.min((contentEdge / stripW) * 100, 88));
+    } else if (window.innerWidth >= 960) {
+      // Medium screen: small decorative strip at the very edge
+      stripW = 72;
+      fadePct = 55;
+    } else {
       canvas.style.display = "none";
       return;
     }
-    // Canvas width = margin area + extra buffer for a smooth fade tail
-    const stripW = Math.min(margin + 120, 600);
+
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
     canvas.style.height = `${window.innerHeight}px`;
     canvas.style.display = "block";
 
-    // Fade to transparent before the content text begins (margin + container padding)
-    const contentEdge = margin + CONTAINER_PAD;
-    const fadePct = Math.round(Math.min((contentEdge / stripW) * 100, 90));
     const grad =
       side === "left"
         ? `linear-gradient(to right, black 0%, transparent ${fadePct}%)`
