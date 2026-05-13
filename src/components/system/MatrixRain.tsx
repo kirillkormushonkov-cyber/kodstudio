@@ -5,28 +5,35 @@ import * as React from "react";
 const CHARS = "01{}[]()<>=+-*/&#@!?\\|^~$;:.";
 const FONT_SIZE = 13;
 const FPS = 18;
+// Width of the centered content container (max-w-7xl)
+const CONTENT_W = 1280;
 
 function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   const ctx = canvas.getContext("2d");
   if (!ctx) return () => {};
 
   const resize = () => {
-    if (window.innerWidth < 900) {
+    const vw = window.innerWidth;
+    // margin = space between viewport edge and content container
+    const margin = Math.floor((vw - CONTENT_W) / 2);
+    // Need at least 40px of free margin to show anything meaningful
+    if (margin < 40) {
       canvas.style.display = "none";
       return;
     }
-    const margin = Math.max(0, Math.floor((window.innerWidth - 1280) / 2));
-    const stripW = Math.min(margin + 280, 600);
+    // Canvas spans the margin — never enters the content area
+    const stripW = margin;
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
     canvas.style.height = `${window.innerHeight}px`;
     canvas.style.display = "block";
 
+    // Fade toward the content edge
     const grad =
       side === "left"
-        ? "linear-gradient(to right, black 0%, transparent 70%)"
-        : "linear-gradient(to left, black 0%, transparent 70%)";
+        ? "linear-gradient(to right, black 0%, transparent 100%)"
+        : "linear-gradient(to left, black 0%, transparent 100%)";
     canvas.style.maskImage = grad;
     (canvas.style as CSSStyleDeclaration & { webkitMaskImage: string }).webkitMaskImage = grad;
   };
@@ -89,9 +96,9 @@ export function MatrixRain() {
     top: 0,
     width: 0,
     height: 0,
-    zIndex: -1,
+    zIndex: 0,
     pointerEvents: "none",
-    opacity: 0.5,
+    opacity: 0.7,
     display: "none",
   };
 
