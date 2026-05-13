@@ -5,34 +5,18 @@ import * as React from "react";
 const CHARS = "01{}[]()<>=+-*/&#@!?\\|^~$;:.";
 const FONT_SIZE = 13;
 const FPS = 18;
-// max-w-7xl = 1280px; px-8 = 32px padding on each side
-const CONTENT_MAX_W = 1280;
-const CONTAINER_PAD = 32;
 
 function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
   const ctx = canvas.getContext("2d");
   if (!ctx) return () => {};
 
   const resize = () => {
-    const margin = Math.floor((window.innerWidth - CONTENT_MAX_W) / 2);
-
-    let stripW: number;
-    let fadePct: number;
-
-    if (margin >= 40) {
-      // Wide screen: use full margin + buffer, clip at content edge
-      stripW = Math.min(margin + 120, 600);
-      const contentEdge = margin + CONTAINER_PAD;
-      fadePct = Math.round(Math.min((contentEdge / stripW) * 100, 88));
-    } else if (window.innerWidth >= 960) {
-      // Medium screen: small decorative strip at the very edge
-      stripW = 72;
-      fadePct = 55;
-    } else {
+    if (window.innerWidth < 900) {
       canvas.style.display = "none";
       return;
     }
-
+    const margin = Math.max(0, Math.floor((window.innerWidth - 1280) / 2));
+    const stripW = Math.min(margin + 280, 600);
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
@@ -41,8 +25,8 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
 
     const grad =
       side === "left"
-        ? `linear-gradient(to right, black 0%, transparent ${fadePct}%)`
-        : `linear-gradient(to left, black 0%, transparent ${fadePct}%)`;
+        ? "linear-gradient(to right, black 0%, transparent 70%)"
+        : "linear-gradient(to left, black 0%, transparent 70%)";
     canvas.style.maskImage = grad;
     (canvas.style as CSSStyleDeclaration & { webkitMaskImage: string }).webkitMaskImage = grad;
   };
@@ -107,7 +91,7 @@ export function MatrixRain() {
     height: 0,
     zIndex: -1,
     pointerEvents: "none",
-    opacity: 0.55,
+    opacity: 0.5,
     display: "none",
   };
 
