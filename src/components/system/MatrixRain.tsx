@@ -16,11 +16,10 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
     const vw = window.innerWidth;
     // margin = space between viewport edge and content container
     const margin = Math.floor((vw - CONTENT_W) / 2);
-    if (margin < 40) {
-      canvas.style.display = "none";
-      return;
-    }
-    const stripW = Math.min(margin + 200, 500);
+    // On narrow viewports show a small edge strip; on wide ones use the full margin
+    const stripW = margin > 40
+      ? Math.min(margin + 200, 500)
+      : 60;
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
