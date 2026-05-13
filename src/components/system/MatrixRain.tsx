@@ -16,13 +16,11 @@ function initCanvas(canvas: HTMLCanvasElement, side: "left" | "right") {
     const vw = window.innerWidth;
     // margin = space between viewport edge and content container
     const margin = Math.floor((vw - CONTENT_W) / 2);
-    // Need at least 40px of free margin to show anything meaningful
     if (margin < 40) {
       canvas.style.display = "none";
       return;
     }
-    // Canvas spans the margin — never enters the content area
-    const stripW = margin;
+    const stripW = Math.min(margin + 200, 500);
     canvas.width = stripW;
     canvas.height = window.innerHeight;
     canvas.style.width = `${stripW}px`;
@@ -96,9 +94,9 @@ export function MatrixRain() {
     top: 0,
     width: 0,
     height: 0,
-    zIndex: 0,
+    zIndex: -1,
     pointerEvents: "none",
-    opacity: 0.7,
+    opacity: 0.6,
     display: "none",
   };
 
