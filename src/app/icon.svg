@@ -6,6 +6,6 @@
       <stop offset="100%" stop-color="#E879F9"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="16" fill="url(#g)"/>
-  <text x="32" y="46" font-family="-apple-system,system-ui,sans-serif" font-size="40" font-weight="700" fill="white" text-anchor="middle">K</text>
+  <rect width="64" height="64" rx="12" fill="url(#g)"/>
+  <path d="M 18 14 L 18 50 L 26 50 L 26 38 L 30 34 L 42 50 L 52 50 L 36 28 L 50 14 L 40 14 L 26 28 L 26 14 Z" fill="white"/>
 </svg>
