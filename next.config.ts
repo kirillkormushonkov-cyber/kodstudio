@@ -30,6 +30,14 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    // Defense-in-depth: explicitly pin which origins may invoke Server
+    // Actions. Same-origin works by default, but listing prod domains
+    // prevents a future config change from silently widening the allow-list.
+    serverActions: {
+      allowedOrigins: ["kodstudio.ru", "www.kodstudio.ru"],
+    },
+  },
   async headers() {
     return [
       {

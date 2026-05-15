@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default function ContactsPage() {
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   return (
     <main className="flex-1">
       {/* Hero */}
@@ -148,7 +149,7 @@ export default function ContactsPage() {
             </div>
 
             {/* Right: brief form */}
-            <BriefForm />
+            <BriefForm siteKey={turnstileSiteKey} />
           </div>
         </Container>
       </section>

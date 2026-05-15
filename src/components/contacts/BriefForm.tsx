@@ -11,6 +11,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        el: HTMLElement,
+        opts: {
+          sitekey: string;
+          theme?: "light" | "dark" | "auto";
+          callback: (token: string) => void;
+          "error-callback"?: () => void;
+          "expired-callback"?: () => void;
+        },
+      ) => string;
+      reset: (id?: string) => void;
+    };
+  }
+}
+
+const TURNSTILE_SCRIPT_SRC =
+  "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
 const TYPES = [
   { value: "web", label: "Сайт", description: "Лендинг, корпоративный, e-commerce" },
   { value: "saas", label: "SaaS", description: "Веб-приложение для подписки" },
@@ -57,8 +78,11 @@ const STEP_FIELDS: ReadonlyArray<readonly (keyof FormValues)[]> = [
 
 const STEP_LABELS = ["Тип проекта", "Бюджет", "Сроки", "Контакты"];
 
-export function BriefForm() {
+export function BriefForm({ siteKey }: { siteKey?: string }) {
   const [step, setStep] = React.useState(0);
+  const [token, setToken] = React.useState<string | null>(null);
+  const captchaRef = React.useRef<HTMLDivElement>(null);
+  const captchaIdRef = React.useRef<string | null>(null);
   const totalSteps = STEP_LABELS.length;
 
   const {
@@ -82,6 +106,50 @@ export function BriefForm() {
     },
   });
 
+  // Inject Turnstile script + render the widget once when user reaches
+  // the final step. Loading the captcha lazily keeps the script off
+  // pages where the user hasn't shown intent yet.
+  React.useEffect(() => {
+    if (!siteKey || step !== totalSteps - 1) return;
+
+    const renderWidget = () => {
+      if (
+        !window.turnstile ||
+        !captchaRef.current ||
+        captchaIdRef.current
+      ) {
+        return;
+      }
+      captchaIdRef.current = window.turnstile.render(captchaRef.current, {
+        sitekey: siteKey,
+        theme: "dark",
+        callback: (t) => setToken(t),
+        "error-callback": () => setToken(null),
+        "expired-callback": () => setToken(null),
+      });
+    };
+
+    if (window.turnstile) {
+      renderWidget();
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>(
+      `script[src="${TURNSTILE_SCRIPT_SRC}"]`,
+    );
+    if (existing) {
+      existing.addEventListener("load", renderWidget);
+      return () => existing.removeEventListener("load", renderWidget);
+    }
+
+    const script = document.createElement("script");
+    script.src = TURNSTILE_SCRIPT_SRC;
+    script.async = true;
+    script.defer = true;
+    script.onload = renderWidget;
+    document.head.appendChild(script);
+  }, [siteKey, step, totalSteps]);
+
   const next = async () => {
     const ok = await trigger(STEP_FIELDS[step] as (keyof FormValues)[]);
     if (ok) setStep((s) => Math.min(s + 1, totalSteps - 1));
@@ -90,16 +158,28 @@ export function BriefForm() {
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
   const onSubmit = async (values: FormValues) => {
+    if (siteKey && !token) {
+      toast.error("Подтвердите, что вы не робот");
+      return;
+    }
     try {
       const res = await fetch("/api/brief", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          website: "",
+          turnstileToken: token ?? "",
+        }),
       });
       if (!res.ok) throw new Error("Server error");
       toast.success("Заявка отправлена! Свяжемся в течение 24 часов.");
       reset();
       setStep(0);
+      if (window.turnstile && captchaIdRef.current) {
+        window.turnstile.reset(captchaIdRef.current);
+      }
+      setToken(null);
     } catch {
       toast.error("Не удалось отправить. Попробуйте позже или напишите в Telegram.");
     }
@@ -111,7 +191,7 @@ export function BriefForm() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      className="border-brand-violet/15 bg-bg-elevated/60 rounded-3xl border p-6 backdrop-blur md:p-8"
+      className="border-brand-violet/15 bg-bg-elevated/60 relative rounded-3xl border p-6 backdrop-blur md:p-8"
     >
       {/* Progress */}
       <div className="mb-2 flex items-center justify-between text-xs">
@@ -284,6 +364,39 @@ export function BriefForm() {
             )}
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      {/* Honeypot — invisible to humans, irresistible to bots. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0"
+      >
+        <label>
+          Сайт
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+      </div>
+
+      {/* Captcha div stays mounted so the widget keeps its state when the
+          user steps back/forward. We only toggle visibility via aria-hidden
+          + hidden class on non-final steps. */}
+      <div
+        className={cn("mt-4", step !== totalSteps - 1 && "hidden")}
+        aria-hidden={step !== totalSteps - 1}
+      >
+        {siteKey ? (
+          <div ref={captchaRef} />
+        ) : (
+          <p className="text-text-muted text-xs">
+            Капча не настроена (нет <code>NEXT_PUBLIC_TURNSTILE_SITE_KEY</code>) —
+            форма принимается без неё. Не для прода.
+          </p>
+        )}
       </div>
 
       {/* Nav */}

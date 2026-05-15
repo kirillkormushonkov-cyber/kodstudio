@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { clientIp } from "@/lib/client-ip";
 import { submit } from "@/lib/reviews";
 import { verifyTurnstile } from "@/lib/turnstile";
 
@@ -18,12 +19,6 @@ const schema = z.object({
   // in verifyTurnstile, which fails closed in production.
   turnstileToken: z.string().default(""),
 });
-
-function clientIp(req: Request): string | undefined {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0]?.trim();
-  return req.headers.get("x-real-ip") ?? undefined;
-}
 
 export async function POST(req: Request) {
   let body: unknown;
