@@ -22,9 +22,6 @@ function shortestOffset(index: number, active: number, total: number): number {
 // (глубина) + rotateY (поворот в сторону центра) + translateX (разнос).
 const VISIBLE_NEIGHBORS = 2;
 const X_STEP_PERCENT = 78;
-// Mobile: push neighbors fully off-screen so their text/tags don't
-// collide with the active slide. No peek on narrow viewports.
-const X_STEP_PERCENT_NARROW = 135;
 const Z_STEP_PX = 180;
 const ROT_STEP_DEG = 45;
 const SCALE_STEP = 0.08;
@@ -56,17 +53,6 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
     const onChange = (e: MediaQueryListEvent) => setHoverCapable(e.matches);
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  // On narrow viewports neighbors must be pushed off-screen — peek
-  // causes their text block to overlap the active slide.
-  const [isNarrow, setIsNarrow] = React.useState(false);
-  React.useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const apply = () => setIsNarrow(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
   }, []);
 
   React.useEffect(() => {
@@ -192,7 +178,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
             if (absOffset > VISIBLE_NEIGHBORS) return null;
 
             const isActive = offset === 0;
-            const x = offset * (isNarrow ? X_STEP_PERCENT_NARROW : X_STEP_PERCENT);
+            const x = offset * X_STEP_PERCENT;
             const z = -absOffset * Z_STEP_PX;
             const rotY = -offset * ROT_STEP_DEG;
             const scale = 1 - absOffset * SCALE_STEP;
@@ -240,7 +226,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
               >
                 <div className="h-full">
                   {isActive ? (
-                    <CaseCard data={c} />
+                    <CaseCard data={c} hideMeta={!isActive} />
                   ) : (
                     <button
                       type="button"
@@ -249,7 +235,7 @@ export function CaseCarousel({ cases }: { cases: PortfolioCase[] }) {
                       aria-label={`Перейти к кейсу: ${c.title}`}
                       tabIndex={-1}
                     >
-                      <CaseCard data={c} />
+                      <CaseCard data={c} hideMeta={!isActive} />
                     </button>
                   )}
                 </div>

@@ -7,7 +7,13 @@ import { CaseCover } from "@/components/portfolio/CaseCover";
 import type { PortfolioCase } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
-export function CaseCard({ data }: { data: PortfolioCase }) {
+export function CaseCard({
+  data,
+  hideMeta = false,
+}: {
+  data: PortfolioCase;
+  hideMeta?: boolean;
+}) {
   return (
     <article className="group">
       <Link href={`/portfolio/${data.slug}`} className="block outline-none">
@@ -45,7 +51,7 @@ export function CaseCard({ data }: { data: PortfolioCase }) {
 
         </div>
 
-        <div className="mt-5">
+        <div className={cn("mt-5", hideMeta && "invisible")} aria-hidden={hideMeta || undefined}>
           <p className="text-text-muted text-xs">
             {data.client}
             <span className="mx-1.5 opacity-50">·</span>
