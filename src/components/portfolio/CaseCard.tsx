@@ -19,8 +19,8 @@ export function CaseCard({
       <Link href={`/portfolio/${data.slug}`} className="block outline-none">
         <div
           className={cn(
-            "border-brand-violet/15 relative aspect-[16/10] overflow-hidden rounded-2xl border",
-            "transition-all duration-300 group-hover:border-brand-violet/40 group-hover:shadow-glow",
+            "border-brand-violet/30 bg-bg-elevated relative aspect-[16/10] overflow-hidden rounded-2xl border shadow-card",
+            "transition-all duration-300 group-hover:border-brand-violet/55 group-hover:shadow-glow",
           )}
         >
           {data.cover ? (
