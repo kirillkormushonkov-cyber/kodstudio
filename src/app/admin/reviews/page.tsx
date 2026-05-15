@@ -40,11 +40,13 @@ function formatDate(iso: string): string {
 
 export default async function AdminReviewsPage() {
   let reviews: ReviewWithMeta[] = [];
-  let loadError: string | null = null;
+  let loadError = false;
   try {
     reviews = await listAll();
   } catch (err) {
-    loadError = err instanceof Error ? err.message : "Unknown error";
+    // Keep the raw message in server logs only — do NOT render to HTML.
+    console.error("[admin/reviews] failed to load reviews:", err);
+    loadError = true;
   }
 
   const counts = {
@@ -81,10 +83,10 @@ export default async function AdminReviewsPage() {
         {loadError && (
           <div className="mb-8 rounded-2xl border border-red-500/30 bg-red-500/10 p-5 text-sm text-red-200">
             <p className="font-semibold">Не удалось загрузить отзывы</p>
-            <p className="mt-1 opacity-80">{loadError}</p>
-            <p className="mt-2 opacity-80">
-              Проверь, что задана переменная <code>DATABASE_URL</code> и
-              применена схема из <code>db/schema.sql</code>.
+            <p className="mt-1 opacity-80">
+              Подробности — в Vercel logs. Проверь, что задана переменная{" "}
+              <code>DATABASE_URL</code> и применена схема из{" "}
+              <code>db/schema.sql</code>.
             </p>
           </div>
         )}
