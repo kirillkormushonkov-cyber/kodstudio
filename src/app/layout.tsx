@@ -103,7 +103,156 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} dark`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var ok=window.CSS&&CSS.supports&&CSS.supports('color','color-mix(in srgb, red, blue)');if(!ok)document.documentElement.setAttribute('data-legacy-browser','1');}catch(e){document.documentElement.setAttribute('data-legacy-browser','1');}})();`,
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `#legacy-browser-fallback{display:none}html[data-legacy-browser] body>*:not(#legacy-browser-fallback){display:none !important}html[data-legacy-browser] #legacy-browser-fallback{display:block !important;position:fixed;top:0;left:0;right:0;bottom:0;background:#0a0a14;color:#f4f4f8;z-index:99999;overflow:auto;font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}`,
+          }}
+        />
+      </head>
       <body className="bg-bg-base text-text-primary font-sans flex min-h-screen flex-col antialiased">
+        <div id="legacy-browser-fallback">
+          <div
+            style={{
+              maxWidth: "640px",
+              margin: "0 auto",
+              padding: "48px 24px",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "72px",
+                height: "72px",
+                margin: "0 auto 32px",
+                borderRadius: "16px",
+                background: "#6b5bff",
+                color: "#fff",
+                fontSize: "44px",
+                fontWeight: "bold",
+                lineHeight: "72px",
+                fontFamily: "Arial, Helvetica, sans-serif",
+              }}
+            >
+              K
+            </div>
+            <h1
+              style={{
+                fontSize: "28px",
+                margin: "0 0 16px",
+                fontWeight: "bold",
+                color: "#f4f4f8",
+              }}
+            >
+              Браузер устарел
+            </h1>
+            <p
+              style={{
+                fontSize: "16px",
+                lineHeight: "1.6",
+                margin: "0 0 12px",
+                color: "#a1a1b5",
+              }}
+            >
+              Сайт KodStudio использует современные веб-технологии и требует
+              свежую версию браузера.
+            </p>
+            <p
+              style={{
+                fontSize: "16px",
+                lineHeight: "1.6",
+                margin: "0 0 32px",
+                color: "#a1a1b5",
+              }}
+            >
+              Обновите ваш браузер до последней версии или установите один из
+              современных:
+            </p>
+            <div
+              style={{
+                display: "block",
+                margin: "0 0 32px",
+              }}
+            >
+              <a
+                href="https://www.google.com/chrome/"
+                style={{
+                  display: "inline-block",
+                  margin: "6px",
+                  padding: "12px 24px",
+                  background: "#6b5bff",
+                  color: "#fff",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  fontSize: "15px",
+                }}
+              >
+                Google Chrome
+              </a>
+              <a
+                href="https://www.microsoft.com/edge"
+                style={{
+                  display: "inline-block",
+                  margin: "6px",
+                  padding: "12px 24px",
+                  background: "#1a1a2e",
+                  color: "#f4f4f8",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  fontSize: "15px",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                Microsoft Edge
+              </a>
+              <a
+                href="https://www.mozilla.org/firefox/"
+                style={{
+                  display: "inline-block",
+                  margin: "6px",
+                  padding: "12px 24px",
+                  background: "#1a1a2e",
+                  color: "#f4f4f8",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  fontSize: "15px",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                Firefox
+              </a>
+            </div>
+            <div
+              style={{
+                paddingTop: "24px",
+                borderTop: "1px solid rgba(255,255,255,0.08)",
+                fontSize: "14px",
+                color: "#a1a1b5",
+                lineHeight: "1.6",
+              }}
+            >
+              <p style={{ margin: "0 0 8px" }}>
+                Если обновить браузер не получается — свяжитесь с нами напрямую:
+              </p>
+              <p style={{ margin: "0" }}>
+                <a
+                  href="mailto:hello@kodstudio.dev"
+                  style={{ color: "#8b5cf6", textDecoration: "none" }}
+                >
+                  hello@kodstudio.dev
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
         <SkipToContent />
         <BackgroundDecor />
         <MatrixRain />
