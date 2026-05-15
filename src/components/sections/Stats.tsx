@@ -73,7 +73,7 @@ export function Stats() {
   return (
     <section className="py-20 md:py-28">
       <Container>
-        <div className="grid grid-cols-2 divide-x divide-y divide-white/10 md:grid-cols-4 md:divide-y-0">
+        <div className="grid grid-cols-2 divide-x divide-y divide-white/10 max-md:[&>:nth-child(2)]:border-r-0 max-md:[&>:nth-child(3)]:border-b-0 md:grid-cols-4 md:divide-y-0">
           {STATS.map((s) => (
             <StatItem key={s.label} {...s} />
           ))}
